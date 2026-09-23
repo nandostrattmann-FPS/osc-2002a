@@ -1,0 +1,936 @@
+<wap-provisioningdoc>
+<characteristic type="Install">
+<parm name="InstallPhase" value="install" />
+<parm name="OSVersionMin" value="6.0" />
+<parm name="OSVersionMax" value="6.99" />
+<parm name="BuildNumberMin" value="0" />
+<parm name="BuildNumberMax" value="-536870912" />
+<parm name="AppName" value="Agilent Technologies infiniiVision" />
+<parm name="NoUninstall" value="1" />
+<parm name="InstallDir" value="%CE1%\infiniiVision" translation="install" />
+<parm name="NumDirs" value="16" />
+<parm name="NumFiles" value="174" />
+<parm name="NumRegKeys" value="0" />
+<parm name="NumRegVals" value="0" />
+<parm name="NumShortcuts" value="0" />
+</characteristic>
+<characteristic type="FileOperation">
+<characteristic type="\Secure\infiniiVision\web\Lxi\Identification" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="Default.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0Default.078" />
+</characteristic>
+</characteristic>
+<characteristic type="LXIIdentification.xsd" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="LXIIDE~1.079" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\web\include\web-socket-js" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="WebSocketMain.swf" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="WEBSOC~1.141" />
+</characteristic>
+</characteristic>
+<characteristic type="swfobject.js" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SWFOBJ~1.142" />
+</characteristic>
+</characteristic>
+<characteristic type="web_socket.min.js" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="WEB_SO~2.143" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\web\css" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="AGBD____.TTF" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="AGBD____.080" />
+</characteristic>
+</characteristic>
+<characteristic type="default.min.css" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="DEFAUL~1.081" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\web\help" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="helpBrowserWebControl.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPBR~1.082" />
+</characteristic>
+</characteristic>
+<characteristic type="helpGetImage.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPGE~1.083" />
+</characteristic>
+</characteristic>
+<characteristic type="helpHome.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="helpHome.084" />
+</characteristic>
+</characteristic>
+<characteristic type="helpHomeAdv.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPHO~1.085" />
+</characteristic>
+</characteristic>
+<characteristic type="helpInfoCal.html" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPIN~1.086" />
+</characteristic>
+</characteristic>
+<characteristic type="helpInfoOptions.html" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPIN~2.087" />
+</characteristic>
+</characteristic>
+<characteristic type="helpInfoVersion.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPIN~1.088" />
+</characteristic>
+</characteristic>
+<characteristic type="helpModifyConfig.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPMO~1.089" />
+</characteristic>
+</characteristic>
+<characteristic type="helpNav.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0helpNav.090" />
+</characteristic>
+</characteristic>
+<characteristic type="helpRecall.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPRE~1.091" />
+</characteristic>
+</characteristic>
+<characteristic type="helpRemoteFrontPanel.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPRE~2.092" />
+</characteristic>
+</characteristic>
+<characteristic type="helpRemoteSCPICommands.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPRE~3.093" />
+</characteristic>
+</characteristic>
+<characteristic type="helpSave.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="helpSave.094" />
+</characteristic>
+</characteristic>
+<characteristic type="helpSaveRecall.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPSA~1.095" />
+</characteristic>
+</characteristic>
+<characteristic type="helpStyle.css" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPST~1.096" />
+</characteristic>
+</characteristic>
+<characteristic type="helpVar.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0helpVar.097" />
+</characteristic>
+</characteristic>
+<characteristic type="helpViewConfig.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELPVI~1.098" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\web\image" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="IEstep1.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0IEstep1.099" />
+</characteristic>
+</characteristic>
+<characteristic type="IEstep2.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0IEstep2.100" />
+</characteristic>
+</characteristic>
+<characteristic type="IEstep3.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0IEstep3.101" />
+</characteristic>
+</characteristic>
+<characteristic type="IEstep4.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0IEstep4.102" />
+</characteristic>
+</characteristic>
+<characteristic type="agilent.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0agilent.103" />
+</characteristic>
+</characteristic>
+<characteristic type="bottomKbLabelWeb.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="BOTTOM~1.104" />
+</characteristic>
+</characteristic>
+<characteristic type="down-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="DOWN-O~1.105" />
+</characteristic>
+</characteristic>
+<characteristic type="down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0000down.106" />
+</characteristic>
+</characteristic>
+<characteristic type="entryLed.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="entryLed.107" />
+</characteristic>
+</characteristic>
+<characteristic type="filltrans.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="FILLTR~1.108" />
+</characteristic>
+</characteristic>
+<characteristic type="instrumentBanner.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INSTRU~1.109" />
+</characteristic>
+</characteristic>
+<characteristic type="instrumentImage.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INSTRU~1.110" />
+</characteristic>
+</characteristic>
+<characteristic type="kbLabel2ChanWeb.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="KBLABE~1.111" />
+</characteristic>
+</characteristic>
+<characteristic type="kbLabel4ChanWeb.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="KBLABE~2.112" />
+</characteristic>
+</characteristic>
+<characteristic type="keyboard.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="keyboard.113" />
+</characteristic>
+</characteristic>
+<characteristic type="labelPanelWeb.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="LABELP~1.114" />
+</characteristic>
+</characteristic>
+<characteristic type="line-heading.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="LINE-H~1.115" />
+</characteristic>
+</characteristic>
+<characteristic type="lxi.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00000lxi.116" />
+</characteristic>
+</characteristic>
+<characteristic type="m2XX2A.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00m2XX2A.117" />
+</characteristic>
+</characteristic>
+<characteristic type="m2XX4A.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00m2XX4A.118" />
+</characteristic>
+</characteristic>
+<characteristic type="m3XX2A.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00m3XX2A.119" />
+</characteristic>
+</characteristic>
+<characteristic type="m3XX4A.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00m3XX4A.120" />
+</characteristic>
+</characteristic>
+<characteristic type="popupMenu.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="POPUPM~1.121" />
+</characteristic>
+</characteristic>
+<characteristic type="popupMenu_wvga.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="POPUPM~2.122" />
+</characteristic>
+</characteristic>
+<characteristic type="rightKbLabelWeb.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="RIGHTK~1.123" />
+</characteristic>
+</characteristic>
+<characteristic type="runStop.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0runStop.124" />
+</characteristic>
+</characteristic>
+<characteristic type="single.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00single.125" />
+</characteristic>
+</characteristic>
+<characteristic type="softkey.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0softkey.126" />
+</characteristic>
+</characteristic>
+<characteristic type="softkey_wvga.jpg" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SOFTKE~1.127" />
+</characteristic>
+</characteristic>
+<characteristic type="splash.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00splash.128" />
+</characteristic>
+</characteristic>
+<characteristic type="splashLoad.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SPLASH~1.129" />
+</characteristic>
+</characteristic>
+<characteristic type="splashSorry.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SPLASH~2.130" />
+</characteristic>
+</characteristic>
+<characteristic type="touchIcon.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="TOUCHI~1.131" />
+</characteristic>
+</characteristic>
+<characteristic type="up-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0up-over.132" />
+</characteristic>
+</characteristic>
+<characteristic type="up.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="000000up.133" />
+</characteristic>
+</characteristic>
+<characteristic type="waveNarrow.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="WAVENA~1.134" />
+</characteristic>
+</characteristic>
+<characteristic type="waveShort.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="WAVESH~1.135" />
+</characteristic>
+</characteristic>
+<characteristic type="waveTall.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="waveTall.136" />
+</characteristic>
+</characteristic>
+<characteristic type="waveWide.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="waveWide.137" />
+</characteristic>
+</characteristic>
+<characteristic type="web-enable.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="WEB-EN~1.138" />
+</characteristic>
+</characteristic>
+<characteristic type="zoom.png" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0000zoom.139" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\web\include" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="vnc.min.js" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="VNCMIN~1.140" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\web\lib" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="edtftpj.jar" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0edtftpj.144" />
+</characteristic>
+</characteristic>
+<characteristic type="plugin.jar" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00plugin.145" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\web\navbar" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="PantherTabs.psd" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="PANTHE~1.146" />
+</characteristic>
+</characteristic>
+<characteristic type="bluebar.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0bluebar.147" />
+</characteristic>
+</characteristic>
+<characteristic type="config-down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="CONFIG~1.148" />
+</characteristic>
+</characteristic>
+<characteristic type="config-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="CONFIG~2.149" />
+</characteristic>
+</characteristic>
+<characteristic type="config.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00config.150" />
+</characteristic>
+</characteristic>
+<characteristic type="help-down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELP-D~1.151" />
+</characteristic>
+</characteristic>
+<characteristic type="help-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HELP-O~1.152" />
+</characteristic>
+</characteristic>
+<characteristic type="help.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0000help.153" />
+</characteristic>
+</characteristic>
+<characteristic type="image-down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="IMAGE-~1.154" />
+</characteristic>
+</characteristic>
+<characteristic type="image-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="IMAGE-~2.155" />
+</characteristic>
+</characteristic>
+<characteristic type="image.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="000image.156" />
+</characteristic>
+</characteristic>
+<characteristic type="printpage-down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="PRINTP~1.157" />
+</characteristic>
+</characteristic>
+<characteristic type="printpage-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="PRINTP~2.158" />
+</characteristic>
+</characteristic>
+<characteristic type="printpage.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="PRINTP~3.159" />
+</characteristic>
+</characteristic>
+<characteristic type="remote-down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="REMOTE~1.160" />
+</characteristic>
+</characteristic>
+<characteristic type="remote-only.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="REMOTE~2.161" />
+</characteristic>
+</characteristic>
+<characteristic type="remote-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="REMOTE~3.162" />
+</characteristic>
+</characteristic>
+<characteristic type="saverecall-down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SAVERE~1.163" />
+</characteristic>
+</characteristic>
+<characteristic type="saverecall-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SAVERE~2.164" />
+</characteristic>
+</characteristic>
+<characteristic type="saverecall.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SAVERE~3.165" />
+</characteristic>
+</characteristic>
+<characteristic type="status-down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="STATUS~1.166" />
+</characteristic>
+</characteristic>
+<characteristic type="status-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="STATUS~2.167" />
+</characteristic>
+</characteristic>
+<characteristic type="status.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00status.168" />
+</characteristic>
+</characteristic>
+<characteristic type="utilities-down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="UTILIT~1.169" />
+</characteristic>
+</characteristic>
+<characteristic type="utilities-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="UTILIT~2.170" />
+</characteristic>
+</characteristic>
+<characteristic type="utilities.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="UTILIT~3.171" />
+</characteristic>
+</characteristic>
+<characteristic type="welcome-down.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="WELCOM~1.172" />
+</characteristic>
+</characteristic>
+<characteristic type="welcome-over.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="WELCOM~2.173" />
+</characteristic>
+</characteristic>
+<characteristic type="welcome.gif" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0welcome.174" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\fpga" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="FPGA2000A.bin" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="FPGA20~1.013" />
+</characteristic>
+</characteristic>
+<characteristic type="FPGA3000A.bin" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="FPGA30~1.014" />
+</characteristic>
+</characteristic>
+<characteristic type="N2750A.bin" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00N2750A.015" />
+</characteristic>
+</characteristic>
+<characteristic type="N2820A.bin" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00N2820A.016" />
+</characteristic>
+</characteristic>
+<characteristic type="gpibFPGA.bin" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="gpibFPGA.018" />
+</characteristic>
+</characteristic>
+<characteristic type="lanFPGA.bin" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0lanFPGA.019" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\upgrade" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="infiniiVisionWebCom.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INFINI~1.030" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision\web" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="ClickFix.js" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="ClickFix.031" />
+</characteristic>
+</characteristic>
+<characteristic type="CookieUtils.js" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="COOKIE~1.032" />
+</characteristic>
+</characteristic>
+<characteristic type="InfiniiVision_Quick_Reference.html" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INFINI~1.033" />
+</characteristic>
+</characteristic>
+<characteristic type="appletInstall.jar" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="APPLET~1.034" />
+</characteristic>
+</characteristic>
+<characteristic type="appletScpi.jar" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="APPLET~2.035" />
+</characteristic>
+</characteristic>
+<characteristic type="appletVnc.jar" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="APPLET~3.036" />
+</characteristic>
+</characteristic>
+<characteristic type="appletsVersion.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="APPLET~1.037" />
+</characteristic>
+</characteristic>
+<characteristic type="constant.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="constant.038" />
+</characteristic>
+</characteristic>
+<characteristic type="doModifyConfig.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="DOMODI~1.039" />
+</characteristic>
+</characteristic>
+<characteristic type="doSave.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00doSave.040" />
+</characteristic>
+</characteristic>
+<characteristic type="download.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="download.041" />
+</characteristic>
+</characteristic>
+<characteristic type="enumConst.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="ENUMCO~1.042" />
+</characteristic>
+</characteristic>
+<characteristic type="frontpanel.min.js" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="FRONTP~2.043" />
+</characteristic>
+</characteristic>
+<characteristic type="getImage.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="getImage.044" />
+</characteristic>
+</characteristic>
+<characteristic type="home.html" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00HOME~1.045" />
+</characteristic>
+</characteristic>
+<characteristic type="homeBottom.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HOMEBO~1.046" />
+</characteristic>
+</characteristic>
+<characteristic type="homeMiddle.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="HOMEMI~1.047" />
+</characteristic>
+</characteristic>
+<characteristic type="homeTop.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0homeTop.048" />
+</characteristic>
+</characteristic>
+<characteristic type="ieCompat.html" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="IECOMP~1.049" />
+</characteristic>
+</characteristic>
+<characteristic type="index.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="000index.050" />
+</characteristic>
+</characteristic>
+<characteristic type="infoCal.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0infoCal.051" />
+</characteristic>
+</characteristic>
+<characteristic type="infoLicense.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INFOLI~1.052" />
+</characteristic>
+</characteristic>
+<characteristic type="infoNav.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0infoNav.053" />
+</characteristic>
+</characteristic>
+<characteristic type="infoVersion.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INFOVE~1.054" />
+</characteristic>
+</characteristic>
+<characteristic type="information.html" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INFORM~1.055" />
+</characteristic>
+</characteristic>
+<characteristic type="lanInfo.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0lanInfo.056" />
+</characteristic>
+</characteristic>
+<characteristic type="modifyConfig.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="MODIFY~1.057" />
+</characteristic>
+</characteristic>
+<characteristic type="navigation.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="NAVIGA~1.058" />
+</characteristic>
+</characteristic>
+<characteristic type="networkStatus.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="NETWOR~1.059" />
+</characteristic>
+</characteristic>
+<characteristic type="pwdEnum.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0pwdEnum.060" />
+</characteristic>
+</characteristic>
+<characteristic type="pwdPrompt.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="PWDPRO~1.061" />
+</characteristic>
+</characteristic>
+<characteristic type="pwdVerify.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="PWDVER~1.062" />
+</characteristic>
+</characteristic>
+<characteristic type="recall.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00recall.063" />
+</characteristic>
+</characteristic>
+<characteristic type="remoteApplet.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="REMOTE~1.064" />
+</characteristic>
+</characteristic>
+<characteristic type="remoteFrontPanel.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="REMOTE~2.065" />
+</characteristic>
+</characteristic>
+<characteristic type="remoteSCPICommands.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="REMOTE~3.066" />
+</characteristic>
+</characteristic>
+<characteristic type="rfp.html" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="000RFP~1.067" />
+</characteristic>
+</characteristic>
+<characteristic type="rfp.mf" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00000rfp.068" />
+</characteristic>
+</characteristic>
+<characteristic type="save.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0000save.069" />
+</characteristic>
+</characteristic>
+<characteristic type="saveFrame.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SAVEFR~1.070" />
+</characteristic>
+</characteristic>
+<characteristic type="saveRecall.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SAVERE~1.071" />
+</characteristic>
+</characteristic>
+<characteristic type="scopeInfo.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SCOPEI~1.072" />
+</characteristic>
+</characteristic>
+<characteristic type="style.css" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="000style.073" />
+</characteristic>
+</characteristic>
+<characteristic type="toolbarHelp.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="TOOLBA~1.074" />
+</characteristic>
+</characteristic>
+<characteristic type="top.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="00000top.075" />
+</characteristic>
+</characteristic>
+<characteristic type="utils.js" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="000utils.076" />
+</characteristic>
+</characteristic>
+<characteristic type="viewConfig.asp" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="VIEWCO~1.077" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\infiniiVision" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="System.Drawing.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SYSTEM~1.001" />
+</characteristic>
+</characteristic>
+<characteristic type="mscorlib.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="mscorlib.002" />
+</characteristic>
+</characteristic>
+<characteristic type="factoryDefault.txt" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="FACTOR~1.003" />
+</characteristic>
+</characteristic>
+<characteristic type="Agilent.Cdf.Api.Licensing.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="AGILEN~4.004" />
+</characteristic>
+</characteristic>
+<characteristic type="Agilent.Cdf.Api.Lxi.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="AG7311~1.005" />
+</characteristic>
+</characteristic>
+<characteristic type="Agilent.Cdf.Api.Security.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="AG5A31~1.006" />
+</characteristic>
+</characteristic>
+<characteristic type="Agilent.Cdf.Api.SystemManagement.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="AGB2A9~1.007" />
+</characteristic>
+</characteristic>
+<characteristic type="Agilent.Cdf.Api.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="AGILEN~1.008" />
+</characteristic>
+</characteristic>
+<characteristic type="Agilent.Cdf.Core.Lxi.Web.ComServer.Interop.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="AGE3C8~1.009" />
+</characteristic>
+</characteristic>
+<characteristic type="OpenNETCF.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="OPENNE~1.010" />
+</characteristic>
+</characteristic>
+<characteristic type="WebPageData.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="WEBPAG~1.011" />
+</characteristic>
+</characteristic>
+<characteristic type="SetupConverter.exe" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SETUPC~1.017" />
+</characteristic>
+</characteristic>
+<characteristic type="splashImage.bin" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="SPLASH~1.020" />
+</characteristic>
+</characteristic>
+<characteristic type="dnssd_CE.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="dnssd_CE.021" />
+</characteristic>
+</characteristic>
+<characteristic type="libcups2.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="libcups2.022" />
+</characteristic>
+</characteristic>
+<characteristic type="libcups2backend.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="LIBCUP~1.023" />
+</characteristic>
+</characteristic>
+<characteristic type="vncServer.exe" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="VNCSER~1.025" />
+</characteristic>
+</characteristic>
+<characteristic type="websockify.exe" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="WEBSOC~1.026" />
+</characteristic>
+</characteristic>
+<characteristic type="infiniiVisionCore.dll" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INFINI~1.028" />
+</characteristic>
+</characteristic>
+<characteristic type="infiniiVisionLauncher.exe" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INFINI~1.029" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Agilent Flash\wfmMem" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="HDF5.COPYRIGHT.TXT" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0COPYING.024" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Secure\Startup" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="infiniivision.lnk" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="INFINI~1.027" />
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="\Temp" translation="install">
+<characteristic type="MakeDir" />
+<characteristic type="EnvVars.txt" translation="install">
+<characteristic type="Extract">
+<parm name="Source" value="0EnvVars.012" />
+</characteristic>
+</characteristic>
+</characteristic>
+</characteristic>
+<characteristic type="Registry">
+</characteristic>
+</wap-provisioningdoc>
