@@ -1,0 +1,18 @@
+<%
+Dim gsAppletVncVersion
+Dim gsAppletScpiVersion
+Dim gsAppletInstallVersion
+Dim gsJREVersion
+Dim gsJREVersionLong
+Dim gsClassid
+Dim gsCodebase
+
+gsAppletVncVersion = "00"
+gsAppletScpiVersion = "00"
+gsAppletInstallVersion = "00"
+gsJREVersionShort="1.6"
+gsJREVersion = "1.6.0_24"
+gsJREVersionLong = "Java SE Runtime Environment 6 update 24"
+gsClassid="clsid:CAFEEFAC-0016-0000-0024-ABCDEFFEDCBA"
+gsCodebase="http://java.sun.com/update/1.6.0/jinstall-6u24-windows-i586.cab"
+%>

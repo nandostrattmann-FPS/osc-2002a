@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ language="VBSCRIPT" %>
+<!--#include file="enumConst.asp"-->
+<!--#include file="constant.asp"-->
+<%
+   Dim gsFilename
+   Dim gsParam1
+   Dim gsParam2
+   Dim gsFileExt
+   Dim giSaveFormatId
+   Dim gsFileId
+   Dim gsWebSavePath
+   Dim gsWebSaveImgFullPath
+   Dim gsRawAsciiXYInfo
+   Dim garrAsciiXYInfo
+   Dim gsRawXYInfo
+   Dim garrXYInfo
+   Dim gsActualFilename
+   Dim goWebSave
+   Dim gsErrStr
+      
+   gsErrStr = Request.querystring("err")
+   gsFilename = Request.querystring("filename")
+   gsParam1 = Request.QueryString("p1")
+   gsParam2 = Request.QueryString("p2")
+   gsFileExt = Request.QueryString("ext")
+
+   giSaveFormatId = FORMAT_SETUP
+   If (gsParam1 <> "") Then
+      giSaveFormatId = CLng(gsParam1) AND MASK_FORMAT_ID
+   End If
+   
+   gsFileId = 0
+   gsWebSavePath = "Flash/tmp/save/"
+   gsWebSaveImgFullPath = ""
+   gsRawAsciiXYInfo = ""
+   
+   If (gsErrStr = "") Then
+      Set goWebSave = CreateObject("infiniiVisionWebCom.WebSave")
+      If (not goWebSave Is Nothing) Then
+         gsFileId = goWebSave.Setup(gsParam1, gsParam2)
+         If (gsFileId > 0) Then
+            gsWebSaveImgFullPath = gsWebSavePath & "webSaveImg" & gsFileId & ".png"
+           
+            'Check and process ASCII XY format
+            If (giSaveFormatId = FORMAT_ASCII_XY) Then
+               gsRawAsciiXYInfo = goWebSave.GetAsciiXYInfo
+            End If
+         Else
+            gsErrStr = goWebSave.GetErrorString
+         End If
+         Set goWebSave = Nothing
+      End If
+   End If
+%>
+<HTML>
+<HEAD>
+   <TITLE>doSave</TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+       
+      function downloadData(filename, cid, wss)
+      {
+         parent.frSaveUI.SaveAsciiXYFile(filename, cid, wss);
+      }
+                  
+      function onMouseOverAutoDownload()
+      {
+         window.status = "Click to save the file";
+      }
+
+      function onMouseOutAutoDownload()
+      {
+         window.status = "";
+      }
+      -->
+   </SCRIPT> 
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="10" cellspacing="0" width="100%">
+      <TR align="left" valign="top">
+         <TD valign="bottom" align="left" width="98%">
+            <DIV align="left">
+<% 
+   If (gsFileId > 0) Then 
+      If (gsRawAsciiXYInfo <> "") Then
+         garrAsciiXYInfo = Split(gsRawAsciiXYInfo, ",") 
+%>
+               <UL>
+<%       
+         for each gsRawXYInfo in garrAsciiXYInfo
+            garrXYInfo = Split(gsRawXYInfo, ";")
+            gsActualFilename = gsFilename & garrXYInfo(0) & gsFileExt
+%>          
+               <LI>
+                  <A href="#" onclick="downloadData('<%=gsActualFilename%>', <%=garrXYInfo(1)%>, <%=garrXYInfo(2)%>);"
+                  onmouseover="onMouseOverAutoDownload(); return true;"
+                  onmouseout="onMouseOutAutoDownload(); return true;"><%=gsActualFilename%></A>
+               </LI>
+<%       
+         next
+%>
+               </UL>
+<%    
+      End If
+%>
+      <FONT color="red"><B><SUP>*</SUP></B></FONT>
+      Data or image saved may be different if acquisition is running or new acquisition is performed.<BR><BR>
+      <IMG src="<%=gsWebSaveImgFullPath%>" alt="Preview" border="1"> <BR>
+<%     
+   else 
+%>
+               <P>
+                  ERROR: <%=gsErrStr%>
+               </P>
+               <SCRIPT language="JavaScript" type="text/javascript">
+                  parent.frSaveUI.gbErr = true;
+               </SCRIPT>
+               
+<% 
+   End If 
+%>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+</BODY>
+</HTML>

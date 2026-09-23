@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<%
+   Dim goScopeInfo
+   Set goScopeInfo = CreateObject("infiniiVisionWebCom.ScopeInfo")
+   Dim goLanInfo
+   Set goLanInfo = CreateObject("infiniiVisionWebCom.LanInfo")
+
+   Dim giCurrIdState
+   Dim goScopeIpc
+   Dim gsRdoOff
+   Dim gsRdoOn
+   Dim gsAdvance
+   Dim gsFwYear
+
+   gbAdvance = False
+   giCurrIdState = "0"
+   gsFwYear = Left(Split(goScopeInfo.FirmwareRev, ".")(2), 4)
+   
+   gsAdvance = Request.QueryString("adv")
+
+   Set goScopeIpc = CreateObject("infiniiVisionWebCom.ScopeIpc")
+   if (not goScopeIpc is nothing) then
+      'get the current Lan Identity state.
+      giCurrIdState = goScopeIpc.LanIden(2)
+      set goScopeIpc = nothing
+   end if
+
+   if (giCurrIdState = "0") then
+      gsRdoOff = "CHECKED "
+      gsRdoOn = ""
+   else
+      gsRdoOff = ""
+      gsRdoOn = "CHECKED "
+   end if
+%>
+<HTML>
+<HEAD>
+   <TITLE>home top </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+
+   <SCRIPT language="JavaScript" type="text/javascript">
+      function OnIdentification(idState)
+      {
+         parent.homeBottom.location = "homeBottom.asp?idState=" + idState;
+      }
+
+      function HomeFramesetObj()
+      {
+         return parent.document.getElementById("idHomeFrameSet");
+      }
+
+      function OnLoad()
+      {
+         if ("<%=gsAdvance%>" == "True")
+         {
+            document.imgAdvanceInfo.src = "image/up-over.gif";
+            parent.gbAdvance = true;
+         }
+         else
+         {
+            document.imgAdvanceInfo.src = "image/down-over.gif";
+            parent.gbAdvance = false;
+         }
+      }
+
+      function OnAdvanceInfo()
+      {
+         if ("<%=gsAdvance%>" == "True")
+         {
+            //now is advance, hide it
+            //alert("action: hide advance");
+            parent.homeTop.location = "homeTop.asp?adv=False";
+         }
+         else
+         {
+            //now is not advance, show it
+            //alert("action: show advance");
+            parent.homeTop.location = "homeTop.asp?adv=True";
+         }
+      }
+
+      function OnMouseOverAdvanceInfo()
+      {
+         if ("<%=gsAdvance%>" == "True")
+         {
+            //advance
+            document.imgAdvanceInfo.src = "image/up-over.gif";
+            window.status = "Close advance information";
+         }
+         else
+         {
+            //not advance
+            document.imgAdvanceInfo.src = "image/down-over.gif";
+            window.status = "Open advance information";
+         }
+      }
+
+      function OnMouseOutAdvanceInfo()
+      {
+         if ("<%=gsAdvance%>" == "True")
+         {
+            //advance
+            document.imgAdvanceInfo.src = "image/up.gif";
+            window.status = "";
+         }
+         else
+         {
+            //not advance
+            document.imgAdvanceInfo.src = "image/down.gif";
+            window.status = "";
+         }
+      }
+      //-->
+   </SCRIPT>
+
+</HEAD>
+<BODY onload="OnLoad()">
+   <TABLE border="0" cellpadding="10" cellspacing="0" width="100%">
+      <TR align="LEFT" valign="TOP">
+         <TD valign="BOTTOM" align="RIGHT" width="98%">
+            <DIV align="LEFT">
+               <TABLE width="100%" border="0" cellspacing="2" cellpadding="0">
+                  <TR>
+                     <TD width="456">
+                        <TABLE border="0" cellpadding="0" cellspacing="3" width="370">
+                           <TR>
+                              <TD colspan="2" width="370">
+                                 <H2>
+                                    Welcome to your
+                                    <BR>
+                                    <IMG align="LEFT" alt="horizontal line" src="image/line-heading.gif" height="4" width="300">
+                                 </H2>
+                              </TD>
+                           </TR>
+                           <TR valign="middle">
+                              <TD width="10">
+                                 &nbsp; </TD>
+                              <TD valign="top" width="350">
+                                 <H1>
+                                    Web-Enabled Oscilloscope
+                                 </H1>
+                              </TD>
+                           </TR>
+                           <TR valign="bottom">
+                              <TD width="10">
+                                 &nbsp; </TD>
+                              <TD align="center" width="270">
+                                 <H1 align="CENTER">
+                                 <%=goScopeInfo.Model%>
+                                 </H1>
+                              </TD>
+                           </TR>
+                        </TABLE>
+                     </TD>
+                     <TD width="100%">
+                     </TD>
+                     <TD align="right" width="150">
+                        <IMG src="image/lxi.jpg" alt="LXI Compliant" height="63" width="93" border="0">&nbsp;&nbsp;&nbsp;&nbsp;
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+   <TABLE border="0" cellpadding="0" cellspacing="2" width="800">
+      <TR>
+         <TD align="RIGHT" width="800">
+            <DIV align="LEFT">
+               <TABLE border="0" cellpadding="5" cellspacing="0" width="790">
+                  <TR>
+                     <TD width="450">
+                        <H3>
+                           <SPAN>Information about this Web-Enabled Instrument </SPAN>
+                        </H3>
+                        <HR noshade size="1">
+                        <TABLE border="0" cellpadding="5" cellspacing="1" width="100%">
+                           <TR>
+                              <TD class="labelBlue" width="42%">
+                                 Instrument </TD>
+                              <TD class="dataWhite" width="58%">
+                                 <%=goScopeInfo.Model%>
+                                 &nbsp;Oscilloscope </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Serial Number </TD>
+                              <TD class="dataGray">
+                                 <%=goScopeInfo.SerialNum%>
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Description </TD>
+                              <TD class="dataWhite">
+                                 <%=goLanInfo.Description%>
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 DNS Hostname </TD>
+                              <TD class="dataGray">
+                                 <%=goScopeInfo.ResolvedHostname%>
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 NetBIOS Name </TD>
+                              <TD class="dataWhite">
+                                 <%=goScopeInfo.NetBIOS%>
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Multicast DNS Hostname </TD>
+                              <TD class="dataGray">
+                                 <%
+                                    If goLanInfo.mDnsState = "ON" Then
+                                       Response.Write goScopeInfo.mDnsHostname
+                                    Else
+                                       Response.Write "mDNS Disabled"
+                                    End If
+                                 %>
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 IP Address </TD>
+                              <TD class="dataWhite">
+                                 <%=goLanInfo.IpAddress%>
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 VISA TCP/IP Connect String </TD>
+                              <TD class="dataGray">
+                                 <%=goScopeInfo.VisaString%>
+                              </TD>
+                           </TR>
+                        </TABLE>
+                        <BR>
+                        <TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+                           <TR>
+                              <TD>
+                                 <IMG src="image/down.gif" name="imgAdvanceInfo" alt="down" height="18" width="18"
+                                    onclick="OnAdvanceInfo(this.form)" onmouseout="OnMouseOutAdvanceInfo()" onmouseover="OnMouseOverAdvanceInfo()">
+                                 <A href="#" onclick="OnAdvanceInfo(this.form);" onmouseout="OnMouseOutAdvanceInfo(); return true;"
+                                    onmouseover="OnMouseOverAdvanceInfo(); return true;"><SPAN class="advLink">Advanced information</SPAN>
+                                 </A> </TD>
+                              <TD>
+                                 <DIV align="center">
+                                    <H3>
+                                       Identification:&nbsp;
+                                       <INPUT <%=gsRdoOff%> class="radiobg" name="rdoId" onclick="OnIdentification(0)"
+                                          type="RADIO" value="OFF">off&nbsp;
+                                       <INPUT <%=gsRdoOn%> class="radiobg" name="rdoId" onclick="OnIdentification(1)"
+                                          type="RADIO" value="ON">on
+                                    </H3>
+                                 </DIV>
+                              </TD>
+                           </TR>
+                        </TABLE>
+                     </TD>
+                     <TD width="275">
+                        &nbsp;
+                        <P align="CENTER">
+                           <!-- max image height 180 -->
+                           <SCRIPT language="JavaScript" type="text/javascript">
+                              document.write('<IMG border="0" alt="Image of this instrument" width="275" src="' + "<%=goScopeInfo.InstImage%>" + '">');
+                           </SCRIPT>
+
+                        </P>
+                     </TD>
+                  </TR>
+               </TABLE>
+<% If (gsAdvance = "True") Then %>
+<!--#include file="homeMiddle.asp"-->
+<% End If%>
+               <TABLE border="0" cellpadding="0" cellspacing="2" width="800">
+                  <TR>
+                     <TD align="RIGHT" width="800">
+                        <DIV align="LEFT">
+                           <TABLE border="0" cellpadding="5" cellspacing="0" width="790">
+                              <TR>
+                                 <TD width="450">
+                                    <P>
+                                       Use the navigation bar on the left to access your oscilloscope&nbsp;and related
+                                       information.
+                                    </P>
+                                    <P align="LEFT">
+                                       © Agilent Technologies, Inc. 2006-<%=gsFwYear%>
+                                    </P>
+                                 </TD>
+                              </TR>
+                           </TABLE>
+                        </DIV>
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+</BODY>
+</HTML>

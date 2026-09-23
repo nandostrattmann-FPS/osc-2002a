@@ -1,0 +1,75 @@
+// JScript File
+function GetCookie(Name)
+{
+   var search = Name + "=";
+   var returnvalue = "";
+   var offset = -1;
+   var end = -1;
+   if (document.cookie.length > 0)
+   {
+      offset = document.cookie.indexOf(search);
+      // if cookie exists
+      if (offset != -1)
+      {
+         offset += search.length;
+         // set index of beginning of value
+         end = document.cookie.indexOf(";", offset);
+         // set index of end of cookie value
+         if (end == -1) end = document.cookie.length;
+         returnvalue = unescape(document.cookie.substring(offset, end));
+      }
+   }
+   return returnvalue;
+}
+
+function PasswordAlreadyApproved()
+{
+   var passwordCookie = GetCookie("passwordCheck");
+   if (passwordCookie.length > 0)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+function GetFilename()
+{
+   var filename = GetCookie("filename");
+   if (filename.length > 0)
+   {
+      return filename;
+   }
+   else
+   {
+      return "scope";
+   }
+}
+
+function SaveFilename(newFilename)
+{
+   var expireDate = new Date();
+   var filename = GetCookie("filename");
+
+   if (newFilename != filename)
+   {
+      expireDate.setDate(expireDate.getDate() + 1);
+      document.cookie = "filename=" + newFilename +
+      ";expires=" + expireDate.toUTCString();
+   }
+}
+
+function SaveInvertGrat(newIsInvertGrat)
+{
+   var expireDate = new Date();
+   var isInvertGrat = (GetCookie("invertGrat") == "true");
+   //alert(newIsInvertGrat + "==" + isInvertGrat);
+   if (newIsInvertGrat != isInvertGrat)
+   {
+      expireDate.setDate(expireDate.getDate() + 1);
+      document.cookie = "invertGrat=" + (newIsInvertGrat ? "true" : "false") +
+                        ";expires=" + expireDate.toUTCString();
+   } 
+}

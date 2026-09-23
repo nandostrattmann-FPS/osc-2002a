@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT"%>
+<!--#include file="appletsVersion.asp"-->
+<HTML>
+<HEAD>
+   <TITLE>infoVersion </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   
+   <SCRIPT type="text/javascript" src="utils.js"></SCRIPT>
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--hide
+      var infoHelpWindow = null;
+      var goScopeInfo = new parent.parent.ScopeInfo();
+      var gsVersion = getAppletVersion(goScopeInfo.sFirmwareRev, "<%=gsAppletInstallVersion%>");
+      
+      function getHelp()
+      {
+        if (!infoHelpWindow || infoHelpWindow.closed)
+          infoHelpWindow = window.open('help/helpInfoVersion.html', 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+        if (infoHelpWindow) infoHelpWindow.focus();
+      }
+      
+      function applyClick(formObj)
+      {
+        if (confirm("Are you sure you want to install this software? " +
+                    "(If you click OK, you will not have access to the instrument for a few minutes)"))
+        {
+          formObj.ContinueOn.value = "True";
+        }
+        else
+        {
+          formObj.ContinueOn.value = "False";
+        }
+     }
+      
+      function displayApplet()
+      {
+        var _app = navigator.appName;
+        if (_app == 'Netscape')
+        {
+          if (! navigator.javaEnabled())
+          {
+            document.write('<DIV style="background:#F0F0F0;padding:1em">' +
+                           'Failed to start the web upgrade applet. Java is disabled.<\/DIV>');
+                           
+            return;
+          }
+
+          document.write('<EMBED type="application/x-java-applet;version=<%=gsJREVersionShort%>" ',
+                         'code="appletInstall/mainApplet.class" ',
+                         'width="480" height="23"   ',
+                         'archive="" ',
+                         'cache_option="No" ',
+                         'cache_archive="appletInstall.jar" ',
+                         'cache_version="' + gsVersion + '" ',
+                         'pluginspage="http://java.com/en/download/index.jsp" ',
+                         'ipaddress="' + location.hostname + '" ',
+                         'scpiPort="5025" ',
+                         'scriptable="true" >',
+                         '<NOEMBED>',
+                         '<DIV style="background:#F0F0F0;padding:1em">',
+                         'Failed to start the web upgrage applet. This can happen when:',
+                         '<UL>',
+                         '   <LI>Your browser needs permission to run the Java applet. In this case, you can give your browser permission to run the applet (for example, by clicking the yellow Information bar).<\/LI>',
+                         '   <BR>',
+                         '   <LI>There is no <%=gsJREVersionLong & " "%> or greater installed. In this case, you can download and install the latest Java SE Runtime Environment from <A HREF="http:\/\/java.com\/en\/download\/index.jsp" target="_blank">Free Java Download.<\/A><\/LI>',
+                         '<\/UL>',
+                         '<\/DIV>',
+                         '<\/NOEMBED>',
+                         '<\/EMBED>');
+        }
+        else if (_app == 'Microsoft Internet Explorer')
+        {
+          var _nAgt = navigator.userAgent;
+          var _fullVersion = 0;
+          var _majorVersion = 0;
+
+          // In Internet Explorer, the true version is after "MSIE" in userAgent
+          if ((verOffset=_nAgt.indexOf("MSIE"))!=-1) {
+            _fullVersion  = parseFloat(_nAgt.substring(verOffset+5));
+            _majorVersion = parseInt(''+_fullVersion);
+          }
+
+          if (_majorVersion == 6)
+          {
+            <!-- this fixes the KB912945 click to activate problem -->
+            document.write('<NOSCRIPT class=clickfix><OBJECT style=\"display:none\">');
+          }
+
+          document.write('<OBJECT ',
+                         'classid="<%=gsClassid%>"',
+                         'codebase="<%=gsCodebase%>"',
+                         'width="480" height="23" hspace="0" vspace="0" align="center">',
+                         '<PARAM NAME="archive" VALUE="">',
+                         '<PARAM NAME="cache_option" VALUE="No">',
+                         '<PARAM NAME="cache_archive" VALUE="appletInstall.jar">',
+                         '<PARAM NAME="cache_version" VALUE="' + gsVersion + '">',
+                         '<PARAM NAME="code" VALUE="appletInstall/mainApplet.class">',
+                         '<PARAM NAME="boxbgcolor" value="#FFFFFF">',
+                         '<PARAM NAME="ipaddress" VALUE = "' + location.hostname + '">',
+                         '<PARAM NAME="scpiPort" VALUE = "5025">',
+                         '<PARAM NAME="scriptable" VALUE="true">',
+                         '<DIV style="background:#F0F0F0;padding:1em">',
+                         'Failed to start the web upgrade applet. This can happen when:',
+                         '<UL>',
+                         '   <LI>Your browser needs permission to run the Java applet. In this case, you can give your browser permission to run the applet (for example, by clicking the yellow Information bar).<\/LI>',
+                         '   <BR>',
+                         '   <LI>There is no <%=gsJREVersionLong & " "%> or greater installed. In this case, you can download and install the latest Java SE Runtime Environment from <A HREF="http://java.com/en/download/index.jsp" target="_blank">Free Java Download.<\/A><\/LI>',
+                         '<\/UL>',
+                         '<\/DIV>',
+                         '<\/OBJECT>');
+                         
+          if (_majorVersion == 6)
+          {
+            <!-- this fixes the KB912945 click to activate problem -->
+            document.write('<\/OBJECT><\/NOSCRIPT>');
+          }
+        }
+        else
+        {
+          document.write('<P>Sorry, unsupported browser.<\/P>');
+        }
+      }
+      
+      function refreshAll()
+      {
+         parent.parent.location.reload(true);
+      }
+      
+      function openBrowserWindow(url)
+      {
+         window.open(url, 'out', 'toolbar=yes,location=yes,menubar=yes,scrollbars=yes, resizable=yes,width=640,height=400,screenX=150,screenY=150');
+      }
+            
+      function showSwLink()
+      {
+         var sLink = "http://www.agilent.com/find/" + goScopeInfo.sModelSeries + "X-Series-sw";
+         openBrowserWindow(sLink);
+      }
+      
+      -->
+   </SCRIPT>
+
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="0" cellspacing="0" width="492">
+      <TR>
+         <TD>
+            <TABLE border="0" cellpadding="5" cellspacing="0" width="100%">
+               <TR>
+                  <TD>
+                     <H3 align="center">
+                        <BR>
+                        Installed Firmware Version
+                     </H3>
+                  </TD>
+               </TR>
+               <TR>
+                  <TD>
+                     <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <TR>
+                           <TD class="dataGray" width="100%">
+                              <TABLE border="2" cellpadding="5" cellspacing="0" width="100%">
+                                 <TR>
+                                    <TD class="dataGray">
+                                       <TABLE border="1" cellpadding="5" cellspacing="1" width="100%">
+                                          <TR>
+                                             <TD class="dataWhite" style="font-weight:bold" >
+                                                <SCRIPT language="JavaScript" type="text/javascript">
+                                                   document.write(goScopeInfo.sFirmwareRev);
+                                                </SCRIPT>                                                
+                                             </TD>
+                                          </TR>
+                                       </TABLE>
+                                    </TD>
+                                 </TR>
+                              </TABLE>
+                           </TD>
+                        </TR>
+                     </TABLE>
+                  </TD>
+               </TR>
+            </TABLE>
+            <BR>
+            <BR>
+            <TABLE border="0" cellpadding="5" cellspacing="1" style="border-collapse: collapse"
+               width="100%">
+               <TR>
+                  <TD>
+                     <DIV align="center">
+                        To upgrade the instrument, browse to an upgrade file and press <B>Install</B>
+                     </DIV>
+                  </TD>
+               </TR>
+               <TR>
+                  <TD>
+                     <SCRIPT language="JavaScript" type="text/javascript">
+                        displayApplet();
+                     </SCRIPT>
+                     <CENTER>
+                        <BR>
+                        The latest version of the oscilloscope software can be downloaded from
+                        <A href="#" onclick="showSwLink()"
+                           onmouseout="window.status=''; return true;" 
+                           onmouseover="window.status='www.agilent.com/find/' + goScopeInfo.sModelSeries + 'sw'; return true;">
+                           www.agilent.com/find/<SCRIPT language="JavaScript" type="text/javascript">                           
+                              document.write(goScopeInfo.sModelSeries);
+                           </SCRIPT>X-Series-sw
+                        </A>                           
+                     </CENTER>
+                  </TD>
+               </TR>
+            </TABLE>
+         </TD>
+      </TR>
+   </TABLE>
+
+   <!-- this script is used to workaround KB912945 click to activate problem -->
+   <SCRIPT language="JScript" type="text/jscript" src="ClickFix.js"></SCRIPT>
+
+</BODY>
+</HTML>

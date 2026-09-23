@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; user-scalable=no"/>
+    <title>IE Compatibility Instructions</title>
+    <link rel="stylesheet" type="text/css" href="css/default.css" />	
+	
+</head>
+<body>
+	<h3>To use this remote front panel, follow these instructions:</h3><br/><br/>
+	
+	<h4>Step 1: Open Internet Options - press 'alt' to show the menu bar, then select the 'Tools' menu and click 'Internet Options'</h4><br/>
+	
+	<img alt="step 1" src="image/IEstep1.png"/><br/><br/>
+	
+	<h4>Step 2: Select the 'Security' tab, select the 'Local intranet' zone and press the 'Sites' button as shown below</h4><br/>
+	
+	<img alt="step 2" src="image/IEstep2.png"/><br/><br/>
+	
+	<h4>Step 3: On the 'Local intranet' dialog, un-check all the check boxes as shown below</h4><br/>
+	
+	<img alt="step 3" src="image/IEstep3.png"/>
+	
+	<h4>Step 4: Press the 'Advanced' button to open the dialog shown below-select the address of your oscilloscope in the 'Websites' list and then press the 'Remove' button</h4><br/>
+	
+	<img alt="step 4" src="image/IEstep4.png"/>
+		
+	<h4>Step 5: Close all the option dialogs and try reloading the Mobile RFP page</h4><br/>
+	
+</body>
+</html>

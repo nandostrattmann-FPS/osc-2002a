@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+  <HTML>
+  <HEAD>
+    <META CONTENT="text/html; charset=iso-8859-1" HTTP-EQUIV="Content-Type">
+    <TITLE>
+      information
+    </TITLE>
+    <SCRIPT LANGUAGE="javascript" TYPE = "text/javascript">
+      <!--hide
+      infoHelpWindow = null;
+      function getHelp()
+      {
+        window.infoTop.getHelp();
+      }
+      -->
+    </SCRIPT>
+  </HEAD>
+  <FRAMESET COLS="*" ROWS="114,*">
+    <FRAME
+      NAME="infoTop"
+      SCROLLING="no"
+      FRAMEBORDER="0"
+      NORESIZE
+      SRC="infoNav.asp">
+      <FRAME
+        NAME="infoContent"
+        FRAMEBORDER="0"
+        SCROLLING="auto"
+        SRC="infoLicense.asp">
+  </FRAMESET>
+  </HTML>
+  

@@ -1,0 +1,38 @@
+<%
+response.Expires = 0
+%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<%@  language="VBSCRIPT" %>
+<!--#include file="scopeInfo.asp"-->
+<!--#include file="lanInfo.asp"-->
+
+<HTML>
+<HEAD>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <META http-equiv="X-UA-Compatible" content="IE=EmulateIE8">
+   <TITLE>
+      <%=goScopeInfo.webTitle%>
+   </TITLE>
+   <SCRIPT language="JavaScript" type="text/javascript">
+      //<!--hide
+      <%
+         CreateJSLanInfoObject
+      %>
+      //
+      <%
+         CreateJSScopeInfoObject
+      %>
+      //-->
+   </SCRIPT>
+</HEAD>
+<FRAMESET cols="*" rows="88,*">
+   <FRAME frameborder="0" marginheight="0" marginwidth="0" name="top" noresize scrolling="NO"
+      src="top.asp">
+   <FRAMESET cols="128,*" rows="*">
+      <FRAME frameborder="0" marginheight="0" marginwidth="0" name="navigation" scrolling="NO"
+         src="navigation.asp">
+      <FRAME frameborder="0" marginheight="0" marginwidth="0" name="content" scrolling="auto"
+         src="home.html">
+   </FRAMESET>
+</FRAMESET>
+</HTML>

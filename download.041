@@ -1,0 +1,141 @@
+<%
+Dim gsFilename
+Dim gsParam1
+Dim gsParam2
+Dim gsFileExt
+Dim gsFileId
+Dim gsDownloadFile
+Dim gsActualFilename
+Dim goWebSave
+
+gsFilename = request.querystring("filename")
+gsParam1 = Request.QueryString("p1")
+gsParam2 = Request.QueryString("p2")
+gsDownloadFile = Request.QueryString("file")
+
+'check for blank filename
+if gsFilename = "" Then
+   ShowJSAlert "Please specified a filename"
+end if
+                                      
+'prevent access to certain files
+gsFileExt = UCase(Mid(gsFilename, InStrRev(gsFilename, ".") + 1))
+select case gsFileExt
+   Case "ASP", "ASA", "ASPX", "ASAX", "MDB", "HTML", "HTM", "JAR", "JS"
+      ShowJSAlert "You are not allow to access " & gsFilename
+end select
+
+'setup the file to download
+set goWebSave = CreateObject("infiniiVisionWebCom.WebSave")
+if (goWebSave is nothing) then
+   ShowJSAlert "Web save failed."
+end if
+
+if (gsDownloadFile = "1") then
+   'download file
+   gsFileId = goWebSave.Setup(gsParam1, gsParam2)
+   if (gsFileId = 0) then
+      ShowJSAlert goWebSave.GetErrorString
+   end if
+   
+   'construct the filename that is actually save in the scope
+   gsActualFilename = "webSave" & gsFileId & "." & gsFileExt
+
+   StartDownload gsFilename, gsFileExt 
+   DownloadFile gsActualFilename
+else
+   'start data transfer
+   if (goWebSave.Execute(gsParam1, gsParam2)= false) then
+      ShowJSAlert goWebSave.GetErrorString
+   end if   
+                                       
+   StartDownload gsFilename, gsFileExt 
+   DownloadData goWebSave
+end if
+
+EndDownload
+set goWebSave = nothing
+
+'-----------------------------------------------------------------
+'Subs and Functions - Download file
+'-----------------------------------------------------------------
+sub DownloadFile(actualFilename)
+   Dim sFullPath
+   Dim nBufferSize
+   Dim oFileSystem
+   Dim arrData
+   
+   nBufferSize = 1024 * 1
+   'creaet the FileSystem object
+   set oFileSystem = CreateObject("infiniiVisionWebCom.FileSystem")
+   if (oFileSystem is nothing) then
+      ShowJSAlert "Failed to create FileSystem object"
+   end if
+
+   sFullPath = Server.MapPath("Flash\tmp\save\" & actualFilename)
+   if (oFileSystem.OpenFileRO(sFullPath) = false) then
+      ShowJSAlert "Web save failed."
+   end if
+
+   arrData = oFileSystem.ReadBinary(nBufferSize)
+   while (IsArray(arrData))
+      Response.BinaryWrite arrData
+      Response.Flush
+      arrData = oFileSystem.ReadBinary(nBufferSize)
+   wend
+   
+   oFileSystem.CloseFile
+   set oFileSystem = nothing
+end sub
+
+
+'-----------------------------------------------------------------
+'Subs and Functions - Download data
+'-----------------------------------------------------------------
+sub DownloadData(webSave)
+   Dim arrData
+
+   arrData = webSave.ReadData
+   while (IsArray(arrData))
+      Response.BinaryWrite arrData
+      Response.Flush      
+      arrData = webSave.ReadData
+   wend
+end sub
+
+'-----------------------------------------------------------------
+'Subs and Functions - generic
+'-----------------------------------------------------------------
+function GetContentType(extension)
+   Select Case extension
+      Case "TXT", "CSV"
+         GetContentType = "text/" & LCase(extension)
+      Case "BMP", "PNG"
+         GetContentType = "image/" & LCase(extension)
+      Case Else
+         GetContentType = "application/x-unknown"
+   end Select 
+end function
+
+sub StartDownload(filename, extension)
+   Response.Buffer = true
+   Response.Clear
+   Response.ContentType = GetContentType(extension)
+   Response.Addheader "content-disposition", "attachment; filename=""" & filename & """"
+end sub
+
+sub EndDownload()
+   Response.Flush
+   Response.End  
+end sub
+
+sub ShowJSAlert(error)
+   Response.Write "<SCRIPT language=""JavaScript"" type=""text/javascript"">" & vbCrLf
+   'Response.Write "   alert('ERROR:" & error & "');" & vbCrLf
+   Response.Write "   parent.frDoSave.location = ""doSave.asp?err=" & error & """"
+   Response.Write "</SCRIPT>" & vbCrLf
+   Response.End
+end sub
+
+
+%>

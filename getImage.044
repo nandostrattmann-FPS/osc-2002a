@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<HTML>
+<HEAD>
+   <META http-equiv="Cache-Control" content="no-cache">
+   <META http-equiv="Pragma" content="no-cache">
+   <META http-equiv="Expires" content="0">
+   <% 
+   Dim gsFileId
+   Dim goScopeIpc
+   Dim gIsInvertGrat
+   Dim gsInvertGrat
+   
+   gIsInvertGrat = false
+   gsInvertGrat = Request.QueryString("inv")
+   If (gsInvertGrat <> "") Then
+      gIsInvertGrat = (gsInvertGrat = "true") 
+     
+      gsFileId = 0
+      set goScopeIpc = CreateObject("infiniiVisionWebCom.ScopeIpc")
+      if (not goScopeIpc is nothing) then
+         gsFileId = goScopeIpc.ScrShot(gIsInvertGrat)
+         set goScopeIpc = nothing
+      end if
+   end if   
+   %>
+   <TITLE>Current front panel image </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+
+   <SCRIPT type="text/javascript" src="CookieUtils.js"></SCRIPT>
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+      var imageHelpWindow = null;
+      var goScopeInfo = new parent.ScopeInfo();
+
+      function getHelp()
+      {
+         if (!imageHelpWindow || imageHelpWindow.closed)
+            imageHelpWindow = window.open('help/helpGetImage.asp?Model=' + goScopeInfo.sModel, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+         if (imageHelpWindow) imageHelpWindow.focus();
+      }
+      
+      function GetImage()
+      {
+         SaveInvertGrat(document.getImageForm.chkInvertGrat.checked)
+         if (document.getImageForm.chkInvertGrat.checked == true)
+         {
+            document.location = "getImage.asp?inv=true"
+         }
+         else
+         {
+            document.location = "getImage.asp?inv=false"
+         }
+      }
+      
+      function onLoad()
+      {
+         if ("<%=gsInvertGrat%>" == "")
+         {                               
+            var sInvertGrat = GetCookie("invertGrat");
+            var isInvertGrat = (sInvertGrat == "true");
+            
+            if (isInvertGrat == true)
+            {
+               document.location = "getImage.asp?inv=true"
+            }
+            else
+            {
+               document.location = "getImage.asp?inv=false"
+            }
+         }
+         else
+         {
+            document.getImageForm.chkInvertGrat.checked = ("<%=gsInvertGrat%>" == "true");
+         }
+      }
+      -->
+   </SCRIPT>
+
+</HEAD>
+<BODY onload="onLoad();">
+<%If (gsInvertGrat <> "") Then%>
+   <TABLE border="0" cellpadding="0" cellspacing="2" width="800">
+      <TR>
+         <TD>
+            <BR>
+            <H3>
+               Instrument screen image uploaded&nbsp;
+
+               <SCRIPT type="text/javascript">
+                  document.write((new Date()).toLocaleString());
+               </SCRIPT>
+
+            </H3>
+            <BR>
+         </TD>
+      </TR>
+      <TR>
+         <TD> 
+            <FORM action="" method="POST" name="getImageForm" id="idGetImageForm">
+            <INPUT type="checkbox" name="chkInvertGrat" onclick="GetImage();"> Invert Graticule </FORM>
+   <% If (gsFileId > 0) Then %>
+            <IMG BORDER="0" ALT="Instrument screen" SRC ="/Flash/tmp/getImages/image<%=gsFileId%>.png">
+   <% Else %>
+            Failed to get instrument screen image.
+   <% End If %>
+         
+         </TD>
+      </TR>
+   </TABLE>
+<% End If %>   
+</BODY>
+</HTML>

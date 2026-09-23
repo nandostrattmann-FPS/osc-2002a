@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<HTML>
+<HEAD>
+   <%
+   Dim goScopeInfo
+   Set goScopeInfo = CreateObject("infiniiVisionWebCom.ScopeInfo")
+   Dim goLanInfo
+   Set goLanInfo = CreateObject("infiniiVisionWebCom.LanInfo")
+
+   'These values are use for debuging
+   'Set gbPrint to true to show the results of changes
+   'Set gbSave to true execute save action
+   Dim gbPrint
+   Dim gbSave
+
+   DIM gNO_CHANGE
+   Dim gbReboot
+   Dim gbChange
+   Dim gbReset
+
+   gbPrint = False   'default False
+   gbSave = True     'default True
+
+   gbReboot = False
+   gbChange = False
+   gNO_CHANGE = "nc"
+   gbForceUpdate = False
+
+   gbReset = (Request.QueryString("reset") = "true")
+
+   Function GetResult(oldVal, key, emptyAsNoChange)
+      Dim sResult
+      Dim sNewVal
+
+      sNewVal = Request.Form(key)
+      If (gbForceUpdate = False AND _
+          (sNewVal = oldVal OR _
+           (sNewVal = "" AND _
+            emptyAsNoChange = True))) Then
+         sResult = gNO_CHANGE
+      Else
+         sResult = sNewVal
+         gbChange = True
+      End If
+
+      GetResult = sResult
+
+      If (key = "autoIp") Then
+         gbForceUpdate = (oldVal = "ON" AND sNewVal = "OFF")
+      End If
+
+      If (gbPrint = True) Then
+         Response.Write "[" & sNewVal & "] vs [" & oldVal & "], final=[" & sResult & "] <BR />"
+      End If
+   End Function
+
+   If (gbReset = False) Then
+      goLanInfo.Hostname      = GetResult(goLanInfo.Hostname       , "hostName"        , False)
+      goLanInfo.Description   = gNO_CHANGE
+      goLanInfo.GpibAddress   = GetResult(goLanInfo.GpibAddress    , "gpibAddr"        , True)
+      goLanInfo.DnsState      = GetResult(goLanInfo.DnsState       , "dynDns"          , False)
+      goLanInfo.Dns1Ip        = GetResult(goLanInfo.Dns1Ip         , "dnsServer"       , True)
+   
+      goLanInfo.AutoIP        = GetResult(goLanInfo.AutoIP         , "autoIp"          , False)
+      goLanInfo.IpAddress     = GetResult(goLanInfo.IpAddress      , "ipAddress"       , True)
+      goLanInfo.SubnetMask    = GetResult(goLanInfo.SubnetMask     , "subnetMask"      , True)
+      goLanInfo.Gateway       = GetResult(goLanInfo.Gateway        , "defaultGateway"  , True)
+      gbForceUpdate = False
+      
+      goLanInfo.Timeout       = gNO_CHANGE
+      goLanInfo.mDnsState     = GetResult(goLanInfo.mDnsState      , "mdns"            , False)
+      goLanInfo.mDnsDesc      = GetResult(goLanInfo.mDnsDesc       , "description"     , True)
+      goLanInfo.Password      = GetResult(goLanInfo.Password       , "password"        , False)
+   
+      If (gbSave = True AND gbChange = True) Then
+         goLanInfo.SaveChanges
+      End If
+   Else
+      goLanInfo.LanReset
+   End If
+
+   Set goLanInfo = Nothing
+   Set goLanInfo = CreateObject("infiniiVisionWebCom.LanInfo")
+   %>
+
+   <TITLE>Identity </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+</HEAD>
+<BODY>
+   <SCRIPT language="JavaScript" type="text/javascript">
+      function IsIp(ipValue)
+      {
+         var ipPattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+         var ipArray = ipValue.match(ipPattern);
+         if (ipArray == null)
+         {
+            return false;
+         }
+         for (i = 1; i < 5; i++)
+         {
+            ipArray[i] = eval(ipArray[i]);
+            if (ipArray[i] > 255)
+            {
+               return false;
+            }
+         }
+         return true;
+      }
+<% 
+   If (gbPrint = False) Then   
+      If (gbChange OR gbReset) then
+%>
+         if (IsIp(location.hostname))
+         {
+            parent.window.location = "http://<%=goLanInfo.IpAddress%>";
+         }
+         else
+         {
+            parent.window.location = "http://<%=goScopeInfo.ResolvedHostname%>";
+         }
+<%    
+      Else 
+%>
+      document.location = 'modifyConfig.asp'
+<%
+      End If
+   End If
+
+   Set goLanInfo = Nothing
+%>
+   </SCRIPT>
+</BODY>
+</HTML>

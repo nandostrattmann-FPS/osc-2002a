@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+  <HTML>
+<!--#include file="pwdEnum.asp"-->  
+  <HEAD>
+    <TITLE>
+      Utilities
+    </TITLE>
+    <META CONTENT="text/html; charset=iso-8859-1" HTTP-EQUIV="Content-Type">
+    <LINK HREF="style.css" REL="stylesheet" TITLE="WebEnabled" TYPE="text/css">
+    <SCRIPT LANGUAGE="JavaScript" TYPE="TEXT/JAVASCRIPT">
+      <!-- hide
+      var infoHelpWindow = null;
+      var goScopeInfo = new parent.parent.ScopeInfo();
+      
+      function getHelp()
+      {
+        if (!infoHelpWindow || infoHelpWindow.closed)
+        {
+          var list = document.forms[0].selectUtility;
+          switch (list.selectedIndex)      
+          {
+            case 0:
+            default:
+              infoHelpWindow = window.open('help/helpInfoOptions.html', 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+              break;
+            case 1:
+              infoHelpWindow = window.open('help/helpInfoVersion.asp?Model=' + goScopeInfo.sModel + '&ModelSeries=' + goScopeInfo.sModelSeries, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+              break;
+            case 2:
+              infoHelpWindow = window.open('help/helpInfoCal.html', 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+              break;
+          }
+        }
+        if (infoHelpWindow) infoHelpWindow.focus();
+      }
+      
+      function selectUtilityPage()
+      {
+        var list = document.forms[0].selectUtility;
+        switch (list.selectedIndex)      
+        {
+          case 0:
+          default:
+            window.parent.infoContent.location = "infoLicense.asp";
+            break;
+          case 1:
+            window.parent.infoContent.location = "pwdVerify.asp?state=skip&page=<%=PWD_UPGRADE%>";
+            break;
+          case 2:
+            window.parent.infoContent.location = "infoCal.asp";
+            break;
+        }
+      }
+      //-->
+
+    </SCRIPT>
+  </HEAD>
+  <BODY>
+  <FORM ACTION="infoNav.html" NAME="infoNav">
+    <TABLE BORDER="0" CELLPADDING="10" CELLSPACING="0" WIDTH="100%">
+      <TR ALIGN="LEFT" VALIGN="TOP">
+        <TD ALIGN="RIGHT" VALIGN="BOTTOM" WIDTH="100%">
+          <DIV ALIGN="LEFT">
+            <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="2" WIDTH="100%">
+              <TR>
+                <TD WIDTH="455">
+                  <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" WIDTH="370">
+                    <TR>
+                      <TD COLSPAN="2" WIDTH="370">
+                        <H2>
+                          &nbsp;
+                        </H2>
+                      </TD>
+                    </TR>
+                    <TR VALIGN="bottom">
+                      <TD WIDTH="20">
+                        &nbsp;
+                      </TD>
+                      <TD VALIGN="top" WIDTH="350">
+                        <H1>
+                          Instrument Utilities
+                          <BR>
+                          <BR>
+                          &nbsp;&nbsp;&nbsp;&nbsp; 
+                          <SELECT NAME="selectUtility"
+                            ONMOUSEOUT="window.status=''; return true;"
+                            ONMOUSEOVER="window.status='Select instrument utility'; return true;"
+                            ONCHANGE="selectUtilityPage()" SIZE="1">
+                            <OPTION>Installed Options</OPTION>
+                            <OPTION>Firmware Version</OPTION>
+                            <OPTION>Calibration Status</OPTION>
+                          </SELECT>
+                        </H1>
+                      </TD>
+                    </TR>
+                  </TABLE>
+                </TD>
+              </TR>
+            </TABLE>
+          </DIV>
+        </TD>
+      </TR>
+    </TABLE>
+  </FORM>
+  </BODY>
+  </HTML>
+  

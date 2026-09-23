@@ -1,0 +1,751 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<HTML>
+<%
+   Dim goScopeInfo
+   Set goScopeInfo = CreateObject("infiniiVisionWebCom.ScopeInfo")
+   Dim goLanInfo
+   Set goLanInfo = CreateObject("infiniiVisionWebCom.LanInfo")
+%>
+<HEAD>
+   <%
+   Dim goScopeReport
+   Dim gsPassword
+
+   gsPassword = ""
+   Set goScopeReport = CreateObject("infiniiVisionWebCom.ScopeReport")
+   If (Not goScopeReport Is Nothing) Then
+      gsPassword  = goScopeReport.Password
+      Set goScopeReport = Nothing
+   End If
+   %>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   <TITLE>modify config </TITLE>
+
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+      var confHelpWindow = null;
+      var errorString = "";
+
+      function getHelp()
+      {
+         if (!confHelpWindow || confHelpWindow.closed)
+            confHelpWindow = window.open('help/helpModifyConfig.asp?Model=' + "<%=goScopeInfo.Model%>", 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+         if (confHelpWindow) confHelpWindow.focus();
+      }
+
+
+      function factoryDefault(formObj)
+      {
+         if (confirm("Are you sure you want to reset the LAN parameters to their default values?"))
+         {
+            formObj.action="doModifyConfig.asp?reset=true"
+            formObj.submit();
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+      }
+
+
+      function applyClick(formObj)
+      {
+         if (!CheckFields(formObj))
+         {
+            return false;
+         }
+
+         if (IsConfigChanged(formObj))
+         {
+            if (confirm("Are you sure you want to restart the instrument network? " +
+                        "(If you click OK, you will not have access to the " +
+                        "instrument via the web browser until the configuation " +
+                        "changes take effect.)"))
+            {
+               return true;
+            }
+            else
+            {
+               return false;
+            }
+         }
+         else
+         {
+            alert("No changes to apply.");
+            return false;
+         }
+      }
+
+      function mdnsOff(formObj)
+      {
+//         formObj.mdnsDesc.disabled = true;
+      }
+
+      function mdnsOn(formObj)
+      {
+//         formObj.mdnsDesc.disabled = false;
+      }
+
+      function autoIpOff(formObj)
+      {
+         formObj.autoIp.value = "OFF";
+         formObj.autoIp[0].checked = true;
+         formObj.ipAddress.disabled = false;
+         formObj.subnetMask.disabled = false;
+         formObj.defaultGateway.disabled = false;
+      }
+
+      function autoIpOn(formObj)
+      {
+         formObj.autoIp.value = "ON";
+         formObj.autoIp[1].checked = true;
+         formObj.ipAddress.disabled = true;
+         formObj.subnetMask.disabled = true;
+         formObj.defaultGateway.disabled = true;
+      }
+
+      function CheckRadioButton(rdoCtrl, value)
+      {
+         if (value == "ON")
+         {
+            rdoCtrl[1].checked = true;
+         }
+         else
+         {
+            rdoCtrl[0].checked = true;
+         }
+         rdoCtrl.value = value;
+      }
+
+      function InitControlValue()
+      {
+         formObj = document.conf;
+
+         CheckRadioButton(formObj.autoIp, "<%=goLanInfo.AutoIP%>");
+
+         formObj.ipAddress.value = "<%=goLanInfo.IpAddress%>";
+         formObj.subnetMask.value = "<%=goLanInfo.SubnetMask%>";
+         formObj.defaultGateway.value = "<%=goLanInfo.Gateway%>";
+         formObj.dnsServer.value = "<%=goLanInfo.Dns1Ip%>";
+         formObj.hostName.value = "<%=goLanInfo.Hostname%>";
+
+         formObj.description.value = "<%=goLanInfo.mDnsDesc%>";
+         formObj.password.value = "<%=gsPassword%>";
+         formObj.gpibAddr.value = "<%=goLanInfo.GpibAddress%>";
+
+         CheckRadioButton(formObj.mdns, "<%=goLanInfo.mDnsState%>");
+      }
+
+      function configLoadInit()
+      {
+         InitControlValue();
+
+         formObj = document.conf;
+
+         if ("<%=goLanInfo.GPIBControl%>" == "ON")
+         {
+            formObj.gpibAddr.disabled = false;
+         }
+         else
+         {
+            formObj.gpibAddr.disabled = true;
+         }
+
+         if (formObj.autoIp[0].checked)
+         {
+            formObj.ipAddress.disabled = false;
+            formObj.subnetMask.disabled = false;
+            formObj.defaultGateway.disabled = false;
+         }
+         else
+         {
+            formObj.ipAddress.disabled = true;
+            formObj.subnetMask.disabled = true;
+            formObj.defaultGateway.disabled = true;
+         }
+      }
+
+
+      function resetConfig()
+      {
+         document.forms[0].reset();
+         configLoadInit();
+      }
+
+
+      // checks all entry fields in config_lan form
+      function CheckFields(formObj)
+      {
+         errorString = "";
+         formObj.ipAddress.value = RemoveSpaces(formObj.ipAddress.value);
+         formObj.ipAddress.value = checkIp(formObj.ipAddress.value);
+
+         // 0.0.0.0 and 255.255.255.255 are not valid IP addresses
+         if (formObj.ipAddress.value == "0.0.0.0")
+            errorString = formObj.ipAddress.value + ' is a special IP address and cannot be used here.';
+         else if (formObj.ipAddress.value == "255.255.255.255")
+            errorString = formObj.ipAddress.value + ' is a special IP address and cannot be used here.';
+
+         if (errorString != "")
+         {
+            alert('IP Address: ' + errorString);
+            formObj.ipAddress.select(); formObj.ipAddress.focus();
+            return false;
+         }
+
+         formObj.subnetMask.value = RemoveSpaces(formObj.subnetMask.value);
+         formObj.subnetMask.value = checkIp(formObj.subnetMask.value);
+         if (errorString != "")
+         {
+            formObj.subnetMask.select(); formObj.subnetMask.focus();
+            alert('Subnet Mask: ' + errorString);
+            return false;
+         }
+
+         formObj.defaultGateway.value = RemoveSpaces(formObj.defaultGateway.value);
+         formObj.defaultGateway.value = checkIp(formObj.defaultGateway.value);
+         if (errorString != "")
+         {
+            alert('Default Gateway: ' + errorString);
+            formObj.defaultGateway.select(); formObj.defaultGateway.focus();
+            return false;
+         }
+
+         // DNS server
+         formObj.dnsServer.value = RemoveSpaces(formObj.dnsServer.value);
+         formObj.dnsServer.value = checkIp(formObj.dnsServer.value);
+         if (errorString != "")
+         {
+            alert('DNS Server: ' + errorString);
+            formObj.dnsServer.select(); formObj.dnsServer.focus();
+            return false;
+         }
+
+         // hostName is checked for validity only if one is given (optional)
+         formObj.hostName.value = RemoveSpaces(formObj.hostName.value);
+         if (formObj.hostName.value != "")
+         {
+            CheckHostName(formObj.hostName.value);
+            if (errorString != "")
+            {
+               alert('Hostname: ' + errorString);
+               formObj.hostName.select(); formObj.hostName.focus();
+               return false;
+            }
+         }
+         else
+         {
+            //set to default
+            formObj.hostName.value = "<%=goScopeInfo.DfltHostname%>";
+         }
+
+         // mdnsDesc is checked for validity only if one is given (optional)
+//         if (formObj.mdnsDesc.value != "")
+//         {
+//            formObj.mdnsDesc.value = RemoveSpaces(formObj.mdnsDesc.value);
+//            CheckMdnsDesc(formObj.mdnsDesc.value);
+//            if (errorString != "")
+//            {
+//               alert('mDNS Description: ' + errorString);
+//               formObj.mdnsDesc.select(); formObj.mdnsDesc.focus();
+//               return false;
+//            }
+//         }
+
+         // password is checked for validity only if one is given (optional)
+         if (formObj.password.value != "")
+         {
+            // formObj.password.value = RemoveSpaces(formObj.password.value);
+            CheckPassword(formObj.password.value);
+            if (errorString != "")
+            {
+               alert('Password: ' + errorString);
+               formObj.password.select(); formObj.password.focus();
+               return false;
+            }
+         }
+
+         //remove white spaces. if is blank, description will be default.
+         formObj.description.value = RemoveSpaces(formObj.description.value);
+         if (formObj.description.value != "")
+         {
+            formObj.description.value = RemoveSpaces(formObj.description.value);
+            CheckMdnsDesc(formObj.description.value);
+            if (errorString != "")
+            {
+               alert('Description: ' + errorString);
+               formObj.description.select(); formObj.description.focus();
+               return false;
+            }
+         }
+         else
+         {
+            //set to default
+            formObj.description.value = "<%=goScopeInfo.DfltMdnsDescription%>";
+         }
+
+         formObj.gpibAddr.value = RemoveSpaces(formObj.gpibAddr.value);
+         CheckInt(formObj.gpibAddr.value);
+         if (errorString != "")
+         {
+            alert('GPIB Address: ' + errorString);
+            formObj.gpibAddr.select();
+            formObj.gpibAddr.focus();
+            return false;
+         }
+
+         if (formObj.gpibAddr.value < 0 || formObj.gpibAddr.value > 30)
+         {
+            alert('GPIB Address: Value must be in range 0-30');
+            formObj.gpibAddr.select();
+            formObj.gpibAddr.focus();
+            return false;
+         }
+         formObj.gpibAddr.value = parseInt(formObj.gpibAddr.value, 10);
+
+         return true;
+      }
+
+
+      // password check
+      // scrutinizes a password: the name starts with letter, contains only
+      // letters, digits, and hyphens, no adjacent hyphens,
+      // no leading or trailing hyphens
+      // contains only [a-z][A-Z][0-9] or "-"
+      function CheckPassword(nameValue)
+      {
+         var hostPattern = /^([A-Za-z][A-Za-z0-9]|[A-Za-z]|[A-Za-z][A-Za-z0-9\-]+[A-Za-z0-9])$/;
+         var hostArray = nameValue.match(hostPattern);
+
+         if (!hostArray)
+         {
+            errorString = nameValue + ' is not a valid password.';
+            return;
+         }
+      }
+
+
+      // hostname label check, not FQHN! (full qualified hostname + domain)
+      // scrutinizes a hostname: the name starts with letter, contains only
+      // letters, digits, and hyphens, no adjacent hyphens,
+      // no leading or trailing hyphens
+      // contains only [a-z][A-Z][0-9] or "-"
+      function CheckHostName(nameValue)
+      {
+         var hostPattern = /^([A-Za-z][A-Za-z0-9]|[A-Za-z]|[A-Za-z][A-Za-z0-9\-]+[A-Za-z0-9])$/;
+         var hostArray = nameValue.match(hostPattern);
+
+         if (!hostArray)
+         {
+            errorString = nameValue + ' is not a valid hostname.';
+            return;
+         }
+
+         var twoHyphens = nameValue.match(/-{2,}/);
+         if (twoHyphens)
+            errorString = nameValue + ': Two adjacent hyphens are not valid.';
+      }
+
+      function CheckMdnsDesc(nameValue)
+      {
+         var hostPattern = /^([A-Za-z][A-Za-z0-9\- ]+[A-Za-z0-9])$/;
+         var hostArray = nameValue.match(hostPattern);
+
+         if (!hostArray)
+         {
+            errorString = nameValue + ' is not a valid mDns Description.';
+            return;
+         }
+
+         var twoHyphens = nameValue.match(/-{2,}/);
+         if (twoHyphens)
+            errorString = nameValue + ': Two adjacent hyphens are not valid.';
+      }
+
+      // domain label check
+      // scrutinizes a domain: the name starts with letter, contains only
+      // letters, digits, and hyphens, no adjacent hyphens,
+      // no leading or trailing hyphens
+      // contains only [a-z][A-Z][0-9] or "-"
+      function CheckDomainName(nameValue)
+      {
+         var hostPattern = /^([A-Za-z]|[A-Za-z][A-za-z0-9]|[A-Za-z][A-Za-z0-9\-\.]+[A-Za-z0-9])$/;
+         var hostArray = nameValue.match(hostPattern);
+
+         if (!hostArray)
+         {
+            errorString = nameValue + ' is not a valid domain.';
+            return;
+         }
+      }
+
+
+      // scrutinizes a sicl name: the name starts with letter, contains only
+      // letters, digits, underscores, and hyphens
+      // no leading or trailing hyphens
+      // contains only [a-z][A-Z][0-9][_] or "-"
+      function CheckSiclName(nameValue)
+      {
+         var namePattern = /^([A-Za-z][\w]+[\w\-]?[\w]+)$/;
+         var nameArray = nameValue.match(namePattern);
+
+         if (!nameArray)
+         {
+            errorString = nameValue + ' is not a valid sicl interface name.';
+            return;
+         }
+      }
+
+
+      // removes leading and trailing spaces
+      function RemoveSpaces(theValue)
+      {
+         // remove leading spaces
+         while ('' + theValue.charAt(0) == ' ')
+            theValue = theValue.substring(1, theValue.length);
+         // remove trailing spaces
+         while ('' + theValue.charAt(theValue.length - 1) == ' ')
+            theValue = theValue.substring(0, theValue.length - 1);
+         return theValue;
+      }
+
+
+      // scrutinizes an IP address: four octets separated by periods
+      // 1 to 3 digits in each octet
+      function checkIp(ipValue)
+      {
+         var ipPattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+         var ipArray = ipValue.match(ipPattern);
+         if (ipArray == null)
+         {
+            errorString = ipValue + ' is not a valid IP address.';
+            return ipValue;
+         }
+         for (i = 1; i < 5; i++)
+         {
+            ipArray[i] = eval(ipArray[i]);
+            if (ipArray[i] > 255)
+            {
+               errorString = ipValue + ' is not a valid IP address.';
+               return ipValue
+            }
+         }
+         return (ipArray[1] + '.' + ipArray[2] + '.' + ipArray[3] + '.' + ipArray[4]);
+      }
+
+
+      // scrutinize a integer entry: all digits must
+      // be digits, contains only [0-9]
+      function CheckInt(intValue)
+      {
+         // remove leading spaces
+         while ('' + intValue.charAt(0) == ' ')
+            intValue = intValue.substring(1, intValue.length);
+         // remove trailing spaces
+         while ('' + intValue.charAt(intValue.length - 1) == ' ')
+            intValue = intValue.substring(0, intValue.length - 1);
+
+         var intPattern = /^[0-9]+$/;
+         var intArray = intValue.match(intPattern);
+
+         if (!intArray)
+         {
+            errorString = intValue + ' is not a valid integer.';
+            return;
+         }
+      }
+
+      function GetOnOffRadioValue(rdo)
+      {
+         if (rdo[0].checked == true)
+         {
+            return "OFF";
+         }
+         else
+         {
+            return "ON";
+         }
+      }
+
+      function IsConfigChanged(formObj)
+      {
+         var bChanged = false;
+
+         bChanged = GetOnOffRadioValue(formObj.autoIp) != "<%=goLanInfo.AutoIP%>";
+
+         bChanged |= (formObj.ipAddress.disabled == false) && (formObj.ipAddress.value != "<%=goLanInfo.IpAddress%>");
+         bChanged |= (formObj.subnetMask.disabled == false) && (formObj.subnetMask.value != "<%=goLanInfo.SubnetMask%>");
+         bChanged |= (formObj.defaultGateway.disabled == false) && (formObj.defaultGateway.value != "<%=goLanInfo.Gateway%>");
+
+         bChanged |= (formObj.dnsServer.disabled == false) && (formObj.dnsServer.value != "<%=goLanInfo.Dns1Ip%>");
+         bChanged |= formObj.hostName.value !=  "<%=goLanInfo.Hostname%>";
+
+         bChanged |= formObj.description.value != "<%=goLanInfo.mDnsDesc%>";
+         bChanged |= formObj.password.value != "<%=gsPassword%>";
+         bChanged |= (formObj.gpibAddr.disabled == false) && (formObj.gpibAddr.value != "<%=goLanInfo.GpibAddress%>");
+
+         bChanged |= GetOnOffRadioValue(formObj.mdns) != "<%=goLanInfo.mDnsState%>";
+
+         return bChanged;
+      }
+
+      //-->
+   </SCRIPT>
+
+</HEAD>
+<BODY onload="configLoadInit();">
+   <TABLE border="0" cellpadding="10" cellspacing="0" width="100%">
+      <TR align="LEFT" valign="TOP">
+         <TD align="RIGHT" valign="BOTTOM" width="98%">
+            <DIV align="LEFT">
+               <TABLE border="0" cellpadding="0" cellspacing="2" width="100%">
+                  <TR>
+                     <TD width="456">
+                        <TABLE border="0" cellpadding="0" cellspacing="3" width="370">
+                           <TR>
+                              <TD colspan="2" width="370">
+                                 <H2>
+                                    &nbsp;
+                                 </H2>
+                              </TD>
+                           </TR>
+                           <TR valign="bottom">
+                              <TD width="20">
+                                 &nbsp; </TD>
+                              <TD valign="top" width="350">
+                                 <H1>
+                                    Modify Network Configuration
+                                 </H1>
+                              </TD>
+                           </TR>
+                        </TABLE>
+                     </TD>
+                     <TD width="100%">
+                     </TD>
+                     <TD align="right" width="150">
+                        <IMG alt="LXI Compliant" border="0" height="63" src="image/lxi.jpg" width="93">&nbsp;&nbsp;&nbsp;&nbsp;
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+   <FORM action="doModifyConfig.asp" method="POST" name="conf">
+   <TABLE border="0" cellpadding="5" cellspacing="0" width="640">
+      <TR>
+         <TD>
+            <CENTER>
+               <INPUT name="cancelChg" onclick="resetConfig(this.form);" onmouseout="window.status=''; return true;"
+                  onmouseover="window.status='Undo any changes made prior to Apply'; return true;"
+                  type="BUTTON" value="Undo Changes">&nbsp; &nbsp; &nbsp; &nbsp;
+               <INPUT name="factorySettings" onclick="factoryDefault(this.form);" onmouseout="window.status=''; return true;"
+                  onmouseover="window.status='Reset entries to factory default settings'; return true;"
+                  type="BUTTON" value="LAN Reset">&nbsp; &nbsp; &nbsp; &nbsp;
+               <INPUT name="Apply" onclick="return applyClick(this.form);" onmouseout="window.status=''; return true;"
+                  onmouseover="window.status='Apply changes: Save and activate configuration changes'; return true;"
+                  type="SUBMIT" value="Apply Changes">
+            </CENTER>
+            <BR>
+         </TD>
+      </TR>
+      <TR>
+         <TD>
+            <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+               <TR>
+                  <TD class="dataGray" width="100%">
+                     <TABLE border="2" cellpadding="5" cellspacing="0" width="100%">
+                        <TR>
+                           <TD class="dataGray">
+                              <TABLE border="1" cellpadding="2" cellspacing="1" width="100%">
+                                 <TR>
+                                    <TH width="180">
+                                       Parameter
+                                    </TH>
+                                    <TH width="230">
+                                       Configured Value
+                                    </TH>
+                                    <TH width="230">
+                                       Edit Configuration
+                                    </TH>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue" colspan="3">
+                                       <DIV align="left">
+                                          <B>IP Settings may be configured using the following: </B>
+                                       </DIV>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       <DIV align="right">
+                                          &nbsp;&nbsp;Automatic&nbsp;
+                                       </DIV>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                        <%=goLanInfo.AutoIP%>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <INPUT class="radiobg2" name="autoIp" onclick="autoIpOff(this.form);" type="RADIO"
+                                           value="OFF">
+                                       OFF &nbsp;
+                                       <INPUT class="radiobg2" name="autoIp" onclick="autoIpOn(this.form);" type="RADIO"
+                                           value="ON">
+                                       ON </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue" colspan="3">
+                                       <DIV align="left">
+                                          IP Settings to use in non automatic mode:
+                                       </DIV>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       &nbsp;&nbsp;IP Address&nbsp; </TD>
+                                    <TD class="dataWhite">
+                                       <%=goLanInfo.IpAddress%>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <INPUT type="TEXT" name="ipAddress" size="15" maxlength="15" value="">
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       &nbsp;&nbsp;Subnet Mask&nbsp; </TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.SubnetMask%>
+                                    </TD>
+                                    <TD class="dataGray">
+                                       <INPUT type="TEXT" name="subnetMask" size="15" maxlength="15" value="">
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       <DIV align="right">
+                                          &nbsp;&nbsp;Default Gateway&nbsp;
+                                       </DIV>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <%=goLanInfo.Gateway%>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <INPUT type="TEXT" name="defaultGateway" size="15" maxlength="15" value="">
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue" colspan="3">
+                                       <DIV align="left">
+                                          Name service settings:
+                                       </DIV>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       <DIV align="right">
+                                          Hostname&nbsp;
+                                       </DIV>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <%=goLanInfo.Hostname%>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <INPUT type="TEXT" name="hostName" size="20" maxlength="20" value="">
+                                       <FONT color="red"><B><SUP>*</SUP></B></FONT>
+                                       <br><em>Requires reboot to take effect.</em>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       <DIV align="right">
+                                          DNS Server&nbsp;
+                                       </DIV>
+                                    </TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.Dns1Ip%>
+                                    </TD>
+                                    <TD class="dataGray">
+                                       <INPUT type="TEXT" name="dnsServer" size="15" maxlength="15" value="">
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       <DIV align="right">
+                                          <B>Multicast DNS&nbsp; </B>
+                                       </DIV>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <%=goLanInfo.mDnsState%>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <INPUT class="radiobg" type="RADIO"  name="mdns" onclick="mdnsOff(this.form);"
+                                          value="OFF">
+                                       OFF &nbsp;
+                                       <INPUT class="radiobg" type="RADIO" name="mdns" onclick="mdnsOn(this.form);"
+                                          value="ON">
+                                       ON </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue" colspan="3">
+                                       <DIV align="left">
+                                          Other settings:
+                                       </DIV>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       <DIV align="right">
+                                          Description&nbsp;
+                                       </DIV>
+                                    </TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.mDnsDesc%>
+                                    </TD>
+                                    <TD class="dataGray">
+                                       <INPUT type="TEXT" name="description" size="32" maxlength="63" value="">
+                                       <FONT color="red"><B><SUP>*</SUP></B></FONT>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       <DIV align="right">
+                                          Password&nbsp;
+                                       </DIV>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <%=gsPassword%>
+                                    </TD>
+                                    <TD class="dataWhite">
+                                       <INPUT type="TEXT" name="password" size="32" maxlength="23" value="">
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       <DIV align="right">
+                                          GPIB Address&nbsp;
+                                       </DIV>
+                                    </TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.GpibAddress%>
+                                    </TD>
+                                    <TD class="dataGray">
+                                       <INPUT type="TEXT" name="gpibAddr" size="10" maxlength="10" value="">
+                                    </TD>
+                                 </TR>
+                              </TABLE>
+                           </TD>
+                        </TR>
+                     </TABLE>
+                  </TD>
+               </TR>
+            </TABLE>
+            <FONT color="red"><B><SUP>*</SUP></B></FONT><EM>Set to blank for factory default value</EM>
+         </TD>
+      </TR>
+   </TABLE>
+   </FORM>
+</BODY>
+</HTML>

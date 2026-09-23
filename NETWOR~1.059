@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<HTML>
+<HEAD>
+<%
+   sModel = "Unknown"
+   sEthSpeed = "Unknown"
+   sEthMode = "Unknown"
+   sRcvdTotalPkts = "0"
+   sRcvdMultiPkts = "0"
+   sRcvdErrorPkts = "0"
+   sSentTotalPkts = "0"
+   sSentMultiPkts = "0"
+   sSentErrorPkts = "0"
+   bNetworkStatus = false
+   
+   sModel = Request.QueryString("Model")
+      
+   set scopeIpc = CreateObject("infiniiVisionWebCom.ScopeIpc")
+   if (not scopeIpc is nothing) then
+      bNetworkStatus = scopeIpc.NetworkStatus
+   end if
+   
+   Response.Write bNetworkStatus
+   'if (bNetworkStatus) then
+      set networkStatus = CreateObject("infiniiVisionWebCom.NetworkStatus")
+      if (not networkStatus is nothing) then
+         sEthMode = networkStatus.EthernetMode
+         sEthSpeed = networkStatus.EthernetSpeed
+         sRcvdTotalPkts = networkStatus.RcvdTotalPkts
+         sRcvdMultiPkts = networkStatus.RcvdMultiPkts
+         sRcvdErrorPkts = networkStatus.RcvdErrorPkts
+         sSentTotalPkts = networkStatus.SentTotalPkts
+         sSentMultiPkts = networkStatus.SentMultiPkts
+         sSentErrorPkts = networkStatus.SentErrorPkts
+      end if
+   'end if   
+   
+%>      
+   <TITLE>Status of The <%=sModel %>
+   </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" type="text/css">
+
+   <SCRIPT language="javascript" type="text/javascript">
+      <!--      hide
+
+      function RefreshStatus()
+      {
+         window.location.reload();
+      }
+
+      function CloseStatus()
+      {
+         window.close();
+      }
+
+      function ClearHistory()
+      {
+         document.statusForm.doClear.value = 1;
+         document.statusForm.submit();
+      }
+      
+      //-->
+   </SCRIPT>
+
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+      <!-- Begin logos row - middle logo is instrument specific -->
+      <TR>
+         <TD height="63" width="230">
+            <IMG alt="Agilent" border="0" height="63" src="image/agilent.gif" width="230">
+         </TD>
+         <TD class="blueBanner" height="63" width="100%">
+            &nbsp;Oscilloscope</TD>
+         <TD align="right" class="blue" height="63">
+         </TD>
+      </TR>
+      <!-- End logos row -->
+      <TR>
+         <TD colspan="3" class="blueLine">
+            <IMG src="image/filltrans.gif" height="2" alt=""></TD>
+      </TR>
+   </TABLE>
+   <TABLE border="0" cellpadding="10" cellspacing="0" width="100%">
+      <TR align="LEFT" valign="TOP">
+         <TD align="RIGHT" valign="BOTTOM" width="98%">
+            <DIV align="LEFT">
+               <TABLE border="0" cellpadding="0" cellspacing="2" width="100%">
+                  <TR>
+                     <TD width="456">
+                        <TABLE border="0" cellpadding="0" cellspacing="3" width="370">
+                           <TR>
+                              <TD colspan="2" width="370">
+                                 <H2>
+                                    &nbsp;
+                                 </H2>
+                              </TD>
+                           </TR>
+                           <TR valign="bottom">
+                              <TD width="20">
+                                 &nbsp;</TD>
+                              <TD valign="top" width="350">
+                                 <H1>
+                                    Network Status
+                                 </H1>
+                              </TD>
+                           </TR>
+                        </TABLE>
+                     </TD>
+                     <TD width="100%">
+                     </TD>
+                     <TD align="right" width="120" height="63">
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+   <TABLE border="0" cellpadding="10" cellspacing="0" width="480">
+      <TR>
+         <TD>
+            <CENTER>
+               <INPUT name="RefreshStat" onclick="RefreshStatus();" type="BUTTON" value=" Refresh ">
+               &nbsp;&nbsp;
+               <INPUT name="CloseStat" onclick="CloseStatus();" type="BUTTON" value=" Close ">
+            </CENTER>
+            <BR>
+         </TD>
+      </TR>
+      <TR>
+         <TD>
+            <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+               <TR>
+                  <TD class="dataGray" width="100%">
+                     <TABLE border="2" cellpadding="5" cellspacing="0" width="100%">
+                        <TR>
+                           <TD class="dataGray">
+                              <TABLE border="1" cellpadding="5" cellspacing="1" width="100%">
+                                 <TR>
+                                    <TD class="labelBlue" width="42%">
+                                       Ethernet Speed</TD>
+                                    <TD class="dataWhite" width="58%">
+                                       <%=sEthSpeed%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Ethernet Duplex Mode</TD>
+                                    <TD class="dataGray">
+                                       <%=sEthMode%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue" colspan="2">
+                                       <DIV align="left">
+                                          Ethernet Packets Received Since Power-on:
+                                       </DIV>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Total packets</TD>
+                                    <TD class="dataWhite">
+                                       <%=sRcvdTotalPkts%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Multicast/Broadcast Packets</TD>
+                                    <TD class="dataGray">
+                                       <%=sRcvdMultiPkts%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Packets with errors</TD>
+                                    <TD class="dataWhite">
+                                       <%=sRcvdErrorPkts%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue" colspan="2">
+                                       <DIV align="left">
+                                          Ethernet Packets Sent Since Power-on:&nbsp;
+                                       </DIV>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Total packets</TD>
+                                    <TD class="dataWhite">
+                                       <%=sSentTotalPkts%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Multicast/Broadcast packets</TD>
+                                    <TD class="dataGray">
+                                       <%=sSentMultiPkts%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Packets with errors</TD>
+                                    <TD class="dataWhite">
+                                       <%=sSentErrorPkts%>
+                                    </TD>
+                                 </TR>
+                              </TABLE>
+                           </TD>
+                        </TR>
+                     </TABLE>
+                  </TD>
+               </TR>
+            </TABLE>
+         </TD>
+      </TR>
+   </TABLE>
+</BODY>
+</HTML>

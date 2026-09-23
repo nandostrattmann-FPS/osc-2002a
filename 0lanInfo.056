@@ -1,0 +1,31 @@
+<%
+Dim goLanInfo
+Set goLanInfo = CreateObject("infiniiVisionWebCom.LanInfo")
+%>
+<% 
+Sub CreateJSLanInfoObject
+%>
+      function LanInfo()
+      {
+         this.sHostname          = "<%=goLanInfo.Hostname%>";
+         this.sDescription       = "<%=goLanInfo.Description%>";
+         this.sGpibAddress       = "<%=goLanInfo.GpibAddress%>";
+         this.sDnsState          = "<%=goLanInfo.DnsState%>";
+         this.sDns1Ip            = "<%=goLanInfo.Dns1Ip%>";
+         this.sIpAddress         = "<%=goLanInfo.IpAddress%>";
+         this.sSubnetMask        = "<%=goLanInfo.SubnetMask%>";
+         this.sGateway           = "<%=goLanInfo.Gateway%>";
+         this.sTimeout           = "<%=goLanInfo.Timeout%>";
+         this.sGPIBControl       = "<%=goLanInfo.GPIBControl%>";
+         this.sUSBControl        = "<%=goLanInfo.USBControl%>";
+         this.sLANControl        = "<%=goLanInfo.LANControl%>";
+         this.sAutoIP            = "<%=goLanInfo.AutoIP%>";
+         this.sMDnsState         = "<%=goLanInfo.mDnsState%>";
+         this.sMDnsDesc          = "<%=goLanInfo.mDnsDesc%>";
+      }
+      
+<%
+   Response.Write "      "
+End Sub
+%>
+

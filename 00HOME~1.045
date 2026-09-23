@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<HTML>
+<HEAD>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <TITLE>home </TITLE>
+
+   <SCRIPT language="javascript" type="text/javascript">
+      <!--hide
+      var hideAdvanceRows = "350,0,*"
+      var homeHelpWindow = null;
+      
+      var goScopeInfo = new parent.ScopeInfo();
+      var gbAdvance = false;
+
+      function getHelp() 
+      {
+         if (!homeHelpWindow || homeHelpWindow.closed)
+         {
+            if (gbAdvance == false)
+               homeHelpWindow = window.open('help/helpHome.asp?Model=' + goScopeInfo.sModel, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+            else
+               homeHelpWindow = window.open('help/helpHomeAdv.asp?Model=' + goScopeInfo.sModel, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+         }
+         if (homeHelpWindow) homeHelpWindow.focus();
+      }
+      -->
+   </SCRIPT>
+
+</HEAD>
+<FRAMESET cols="*" rows="100%,0" id="idHomeFrameSet">
+   <FRAME name="homeTop" frameborder="0" scrolling="auto" noresize src="homeTop.asp?adv=False">
+   <FRAME name="homeBottom" frameborder="0" scrolling="no" noresize src="homeBottom.asp">
+</FRAMESET>
+</HTML>

@@ -1,0 +1,298 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<%
+   Dim giDataSize
+   Dim goArrData
+   Dim goScopeIpc
+   Dim gsFailMsg
+   Dim gsRecallFilename
+   Dim giMaxFilesize
+   Dim gsModel
+   
+   giMaxFilesize = 1024 * 5000
+   gsFailMsg = ""
+   gsRecallFilename = "\temp\recallFile.raw"
+   
+   gsModel = Request.QueryString("model")
+   
+   giDataSize = Request.TotalBytes
+   goArrData = Request.BinaryRead(giDataSize)
+   
+   If (giDataSize > 0 AND giDataSize < giMaxFilesize) Then
+      Set goScopeIpc = CreateObject("infiniiVisionWebCom.ScopeIpc")
+      If (goScopeIpc.Recall(goArrData) = False) Then
+         gsFailMsg = "Recall failed."
+      End If
+   Else
+      If (giDataSize >= giMaxFilesize) Then
+         gsFailMsg = "File too large to upload."
+      End If
+   End If
+   
+%>
+<HTML>
+<HEAD>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   <TITLE>Web Save Recall</TITLE>
+
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+      var recallHelpWindow = null;
+      var goScopeInfo = new parent.parent.ScopeInfo();
+
+      function openBrowserWindow(url)
+      {
+         window.open(url, 'out', 'toolbar=yes,location=yes,menubar=yes,scrollbars=yes, resizable=yes,width=640,height=400,screenX=150,screenY=150');
+      }
+
+      function getHelp()
+      {
+         if (!recallHelpWindow || recallHelpWindow.closed)
+            recallHelpWindow = window.open('help/helpRecall.asp?Model=' + goScopeInfo.sModel, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+         if (recallHelpWindow) recallHelpWindow.focus();
+      }
+      
+      function onLoad()
+      {
+         var formObj = document.frmRecall;
+         //frmRecall.recallFile.focus();
+         formObj.btnRecall.disabled = true;
+         formObj.selWfmMem.disabled = true;
+         
+         if (formObj.arbColumn)
+         {
+            formObj.arbColumn.disabled = true;
+         }
+         
+         if (formObj.selArbSrc)
+         {
+            formObj.selArbSrc.disabled = true;
+         }
+      }   
+      
+      function CheckFileExt(filename)
+      {
+         //var extPatt = /\.[ms][sch][kp5]$/;
+<% If (gsModel <> "2000") Then%>            
+         var extPatt = /\.(msk|scp|h5|csv)$/i;
+<% Else %>
+         var extPatt = /\.(msk|scp|h5)$/i;
+<% End if %>
+         
+         var result = filename.match(extPatt);
+         
+         if (result)
+         {
+            return result[0];
+         }
+         return "";
+      }
+      
+      function recallFile_onChange(formObj, bPrompt)
+      {
+         //alert("recallFile_onPropertyChange");
+         var sFileExt = CheckFilename(formObj, bPrompt);
+         if (sFileExt == "")
+         {
+            formObj.btnRecall.disabled = true;
+            formObj.selWfmMem.disabled = true;
+
+            if (formObj.arbColumn)
+            {
+               formObj.arbColumn.disabled = true;
+            }
+            
+            if (formObj.selArbSrc)
+            {
+               formObj.selArbSrc.disabled = true;
+            }
+         }
+         else
+         {
+            formObj.btnRecall.disabled = false;
+            if (sFileExt.toLowerCase() == ".h5")
+            {
+               formObj.selWfmMem.disabled = false;
+            }
+            else
+            {
+               formObj.selWfmMem.disabled = true;
+            }
+            
+            if (sFileExt.toLowerCase() == ".csv")
+            {
+               if (formObj.arbColumn)
+               {
+                  formObj.arbColumn.disabled = false;
+               }
+               
+               if (formObj.selArbSrc)
+               {
+                  formObj.selArbSrc.disabled = false;
+               }   
+            }
+            else
+            {
+               if (formObj.arbColumn)
+               {
+                  formObj.arbColumn.disabled = true;
+               }
+               
+               if (formObj.selArbSrc)
+               {
+                  formObj.selArbSrc.disabled = true;
+               }   
+            }
+       
+         }
+      }
+      
+      function CheckFilename(formObj, bPrompt)
+      {
+         var sFullPath = formObj.recallFile.value;
+         var sFileExt = CheckFileExt(sFullPath);
+
+         if (bPrompt == true && sFileExt == "")
+         {            
+<% If (gsModel <> "2000") Then%>
+            alert("The selected file for recall is not valid.\nOnly select Setup(*.scp), Mask(*.msk), Reference Waveform data(*.h5) or Arbitrary Waveform data(*.csv) file.");
+<% Else %>
+            alert("The selected file for recall is not valid.\nOnly select Setup(*.scp), Mask(*.msk) or Reference Waveform data(*.h5)");
+<% End If %>            
+         }
+         return sFileExt;
+      }
+      
+      function frmRecall_onSubmit(formObj)
+      {
+         if (formObj.recallFile.value == "")
+         {
+            alert("You need to select a file to recall.");
+            return false;
+         }
+         
+         if (CheckFilename(formObj, true) == "")
+         {
+            return false;
+         }
+         else
+         {  
+            formObj.btnRecall.disabled = true;
+            return true;
+         }
+      }
+      
+      function ShowFailedMsg()
+      {
+         if ("<%=gsFailMsg%>" != "")
+         {
+            alert("<%=gsFailMsg%>");
+         }
+      }
+      
+      ShowFailedMsg();      
+      -->
+   </SCRIPT>
+
+</HEAD>
+<BODY onload="onLoad();">
+   <TABLE border="0" cellpadding="10" cellspacing="0" width="100%">
+      <TR align="left" valign="top">
+         <TD valign="bottom" align="left" width="98%">
+            <DIV align="left">
+               <TABLE width="640" border="0" cellpadding="0" cellspacing="2">
+                  <TR>
+                     <TD width="100%">
+                        <H3>
+                           <SPAN>Recall</SPAN>
+                        </H3>
+                        <HR noshade size="1">
+                     </TD>
+                  </TR>
+                  <TR>
+                     <TD>
+                        <FORM action="recall.asp?model=<%=gsModel%>" method="post" name="frmRecall" enctype="multipart/form-data" 
+                              onsubmit="return frmRecall_onSubmit(this);">
+                        <TABLE border="0" cellpadding="1" cellspacing="1" width="100%">
+                           <TR>
+                              <TD class="labelBlue">
+                                 Filename&nbsp;
+                              </TD>
+                              <TD>
+                                 <INPUT class="stdFont" name="recallFile" id="idRecallFile" type="file" accept="text/txt" size="70" 
+                                    onchange="recallFile_onChange(this.form, true);" onkeyup="recallFile_onChange(this.form, false);">
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 To Reference Waveform&nbsp;
+                              </TD>
+                              <TD>
+                                 <SELECT class="dataWhite" name="selWfmMem" id="idSelWfmMem">
+                                    <OPTION value="0">R1</OPTION>
+                                    <OPTION value="1">R2</OPTION>
+<% If (gsModel = "4000") Then%>
+                                    <OPTION value="2">R3</OPTION>
+                                    <OPTION value="3">R4</OPTION>
+<% End If %>
+                                 </SELECT>
+                              </TD>
+                           </TR>
+<% If (gsModel = "4000") Then%>                           
+                           <TR>
+                              <TD class="labelBlue">
+                                 Load to&nbsp; 
+                              </TD>
+                              <TD>
+                                 <SELECT class="dataWhite" name="selArbSrc" id="idSelArbSrc">
+                                    <OPTION value="0">Wave Gen 1</OPTION>
+                                    <OPTION value="1">Wave Gen 2</OPTION>
+                                 </SELECT>
+                              </TD>
+                           </TR>
+<% End If%>
+<% If (gsModel <> "2000") Then%>                           
+                           <TR>
+                              <TD class="labelBlue">
+                                 Arb Waveform Data Column&nbsp; 
+                              </TD>
+                              <TD>
+                                 <SELECT class="dataWhite" name="arbColumn" id="idArbColumn">
+                                    <OPTION value="1">1</OPTION>
+                                    <OPTION value="2" selected>2</OPTION>
+                                    <OPTION value="3">3</OPTION>
+                                    <OPTION value="4">4</OPTION>
+                                    <OPTION value="5">5</OPTION>
+                                 </SELECT>
+                              </TD>
+                           </TR>
+<% End If%>
+                           <TR>
+                              <TD colspan="2">
+                                 <BR>
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD colspan="2" >
+                                 <TABLE border="0" cellpadding="1" cellspacing="0" width="100%">
+                                    <TR>
+                                       <TD style="text-align:right">
+                                       <INPUT name="btnRecall" id="idBtnRecall" type="submit" value=" Recall ">
+                                       </TD>
+                                    </TR>
+                                 </TABLE>
+                              </TD>
+
+                           </TR>
+                           </TABLE>
+                        </FORM>
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+</BODY>
+</HTML>

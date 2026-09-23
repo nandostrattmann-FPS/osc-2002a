@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<HTML>
+<!--#include file="pwdEnum.asp"-->
+<%
+   sStatus = Request.QueryString("status")
+   gsPage = Request.QueryString("page")
+   gsUIType = Request.QueryString("ui")
+   If (gsUIType = "") Then
+      gsUIType = "0"
+   End If
+%>
+<HEAD>
+
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   <TITLE>password check</TITLE>
+   
+   <SCRIPT type="text/javascript" src="CookieUtils.js"></SCRIPT>
+   <SCRIPT language="JavaScript" type="text/javascript">
+   <!--      hide
+      confHelpWindow = null;
+
+      function getHelp()
+      {
+         //no help
+      }
+      
+      function onSubmit()
+      {
+         if (document.pwdForm.passwordTextBox.value.length > 0)
+         {
+            document.pwdForm.action = "pwdVerify.asp" + 
+                                      "?page=<%=gsPage%>" +
+                                      "&ui=<%=gsUIType%>";
+            document.pwdForm.submit();
+            return true;
+         }
+         else
+         {
+            alert("Please key in password.");
+            document.pwdForm.passwordTextBox.focus();
+            return false;
+         }
+      }
+      
+      function onCancel()
+      {
+         <%Select Case CInt(gsPage)%>
+            <%Case PWD_MODIFIY_CONFIG%>
+               document.location="viewConfig.asp";
+               return true;
+            <%Case PWD_APPLET_RFP, PWD_REMOTE_SCPI%>
+               document.location="remoteApplet.asp";
+               return true;
+            <%Case PWD_BROWSER_RFP%>
+               window.close();
+               return true;
+            <%Case PWD_RECALL%>
+               document.location="saveRecall.asp";
+               return true;
+            <%Case else%>
+               return false;
+         <%End Select%>
+      }
+
+      function onPageLoad(formObj)
+      {
+         document.pwdForm.passwordTextBox.focus();
+<%       If (CInt(gsPage) = PWD_UPGRADE) Then %>
+         document.pwdForm.btnCancel.disabled = true;
+<%       End If %>
+      }
+      
+      //check immediately to avoid flashing this page
+      if (PasswordAlreadyApproved())
+      {
+         document.location = "pwdVerify.asp" +
+                             "?state=approved" +
+                             "&page=<%=gsPage%>" +
+                             "&ui=<%=gsUIType%>";
+      }
+      //-->
+   </SCRIPT>
+
+</HEAD>
+<BODY onload="onPageLoad()">
+   <TABLE border="0" cellpadding="10" cellspacing="0" width="100%">
+      <TR align="LEFT" valign="TOP">
+         <TD align="RIGHT" valign="BOTTOM" width="98%">
+            <DIV align="LEFT">
+               <TABLE border="0" cellpadding="0" cellspacing="2" width="100%">
+                  <TR>
+                     <TD width="456">
+                        <TABLE border="0" cellpadding="0" cellspacing="3" width="370">
+                           <TR>
+                              <TD colspan="2" width="370">
+                                 <H2>
+                                    &nbsp;
+                                 </H2>
+                              </TD>
+                           </TR>
+                           <TR valign="bottom">
+                              <TD width="20">
+                                 &nbsp; </TD>
+                              <TD valign="top" width="350">
+                                 <H1>
+                                    Security Check
+                                 </H1>
+                              </TD>
+                           </TR>
+                        </TABLE>
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+   <FORM action="" onsubmit="return onSubmit();" method="POST" name="pwdForm" id="idPwdForm">
+   <TABLE border="0" cellpadding="5" cellspacing="0" width="640">
+      <TR>
+         <TD>
+            <B>This page is password protected</B></TD>
+      </TR>
+<%if (sStatus = "fail") then%>      
+      <TR>
+         <TD>
+            <FONT color="#FF0000">
+               <B>Wrong password. Check your password and try again.</B></FONT></TD>
+      </TR>
+<%end if%>      
+      <TR>
+         <TD>
+            Enter Password:&nbsp;&nbsp;&nbsp;
+            <INPUT class="stdFont" type="password" name="passwordTextBox" size="32" maxlength="23" value="">
+            <BR>
+            <INPUT type="checkbox" name="rememberPwd">
+            Remember password for this session
+            <BR>
+            <BR>
+            <INPUT type="submit" value="     OK     " >&nbsp;&nbsp;&nbsp;&nbsp;
+            <INPUT type="button" value="  Cancel  " onClick="return onCancel();" name="btnCancel">
+         </TD>
+      </TR>
+   </TABLE>
+   </FORM>
+</BODY>
+</HTML>

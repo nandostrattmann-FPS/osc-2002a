@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<HTML>
+<!--#include file="pwdEnum.asp"-->
+<%
+   Dim gsUIType
+   Dim gsState
+   Dim gsInPassword
+   Dim gsRememberedPwd
+   Dim gsPassword
+   Dim gbSkip
+   
+   gsUIType = Request.QueryString("ui")
+   If (gsUIType = "") Then
+      gsUIType = "0"
+   End If
+   gsState = Request.QueryString("state")
+   gsPage = Request.QueryString("page")
+   gsInPassword= Request.Form("passwordTextBox")
+   gsRememberedPwd = Request.Form("rememberPwd")
+
+   gsPassword = ""
+   set scopeReport = CreateObject("infiniiVisionWebCom.ScopeReport")
+   if (not scopeReport is nothing) then
+      gsPassword  = scopeReport.Password
+   end if
+   
+   gbSkip = false
+   bPwdApproved = false
+   if (gsPassword = "") OR (gsState = "approved") then
+      bPwdApproved = true
+   elseif (gsState = "") then
+      if (gsPassword = gsInPassword) then
+         bPwdApproved = true
+      end if
+   elseif (gsState = "skip") then
+      gbSkip = true
+   else
+      bPwdApproved = false
+   end if
+%>
+<HEAD>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   <TITLE>redirection</TITLE>
+   <SCRIPT language="JavaScript" type="text/javascript">
+   <!--      hide
+      var goScopeInfo;
+      function onPageLoad()
+      {
+         <%if (bPwdApproved) then%>
+            if ("<%=gsRememberedPwd%>" == "on")
+            {
+               document.cookie = "passwordCheck=true";
+            }
+            <%Select Case CInt(gsPage)%>
+               <%Case PWD_MODIFIY_CONFIG%>
+                  document.location = "modifyConfig.asp";
+               
+               <%Case PWD_APPLET_RFP%>
+                  goScopeInfo = new parent.ScopeInfo();
+                  document.location = "remoteFrontPanel.asp" + 
+                                      "?hn=" + location.hostname + 
+                                      "&an=" + goScopeInfo.sAnalogChannels + 
+                                      "&dg=" + goScopeInfo.sDigitalChannels +
+                                      "&dc=" + goScopeInfo.sWebTitle +
+                                      "&fn=" + goScopeInfo.sVncFilename +
+                                      "&mn=" + goScopeInfo.sModel +
+                                      "&ui=<%=gsUIType%>"
+               <%Case PWD_REMOTE_SCPI%>
+                  goScopeInfo = new parent.ScopeInfo();
+                  document.location = "remoteSCPICommands.asp" + 
+                                      "?hn=" + location.hostname + 
+                                      "&dc=" + goScopeInfo.sWebTitle +
+                                      "&fn=" + goScopeInfo.sScpiFilename;
+               <%Case PWD_BROWSER_RFP%>
+                  document.location = "rfp.html";
+               <%Case PWD_RECALL%>
+                  goScopeInfo = new parent.ScopeInfo();
+                  document.location = "recall.asp" +
+                                       "?model=" +  goScopeInfo.sModelSeries;
+               <%Case PWD_UPGRADE%>
+                  document.location = "infoVersion.asp"
+            <%End Select%>
+         <%else%>
+            <%if (gbSkip) then %>
+               document.location = "pwdPrompt.asp" +
+                                   "?page=<%=gsPage%>" + 
+                                   "&ui=<%=gsUIType%>";
+            <%else%>
+               document.location = "pwdPrompt.asp" +
+                                   "?status=fail" +
+                                   "&page=<%=gsPage%>" + 
+                                   "&ui=<%=gsUIType%>";
+            <%end if%>
+         <%end if%>         
+      }      
+      //-->
+   </SCRIPT>
+
+</HEAD>
+<BODY onload="onPageLoad();">
+</BODY>
+</HTML>

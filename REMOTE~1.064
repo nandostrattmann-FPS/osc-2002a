@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<!--#include file="pwdEnum.asp"-->
+<HEAD>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   <TITLE>Browser Web Control </TITLE>
+
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+      var remoteHelpWindow = null;
+      var goScopeInfo = new parent.ScopeInfo();
+
+      function doRemoteFrontPanel(bFullUI)
+      {
+         var uiType = 2;
+         if (!bFullUI)
+         {
+            if (goScopeInfo.sModelSeries == "2000" ||
+                goScopeInfo.sModelSeries == "3000")
+            {
+               uiType = 1;
+            }
+            else
+            {
+               uiType = 0;
+            }
+         }
+         window.parent.content.location = "pwdVerify.asp?state=skip&page=<%=PWD_APPLET_RFP%>&ui=" + uiType;
+      }
+
+      function doBrowserBasedRemoteFrontPanel()
+      {
+         window.open('pwdVerify.asp?state=skip&page=<%=PWD_BROWSER_RFP%>','null','width=1024,height=748,toolbar=no,scrollbars=no,location=no,resizable=yes');
+      }
+
+      function doSCPICommands()
+      {
+         window.parent.content.location = "pwdVerify.asp?state=skip&page=<%=PWD_REMOTE_SCPI%>";
+      }
+
+      function openBrowserWindow(url)
+      {
+         window.open(url, 'out', 'toolbar=yes,location=yes,menubar=yes,scrollbars=yes, resizable=yes,width=640,height=400,screenX=150,screenY=150');
+      }
+
+      function getHelp()
+      {
+         if (!remoteHelpWindow || remoteHelpWindow.closed)
+            remoteHelpWindow = window.open('help/helpBrowserWebControl.asp?Model=' + goScopeInfo.sModel, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+         if (remoteHelpWindow) remoteHelpWindow.focus();
+      }
+      -->
+   </SCRIPT>
+
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="12" cellspacing="0" width="100%">
+      <TR align="left" valign="TOP">
+         <TD align="RIGHT" valign="TOP" width="800" rowspan="4">
+            <DIV align="LEFT">
+               <TABLE border="0" cellpadding="5" cellspacing="0" width="800">
+                  <TR>
+                     <TD width="100%">
+                        <H3>
+                           <SPAN>Remote Front Panel </SPAN>
+                        </H3>
+                        <HR noshade size="1">
+                        Remote Front Panel allows you to view the screen of your
+                        <SCRIPT language="JavaScript" type="text/javascript">
+                           document.write(goScopeInfo.sModel)
+                        </SCRIPT>
+                        oscilloscope and control it using a mouse and keyboard.<BR>
+                        Select,
+                        <UL>
+                           <LI><A href="#" onclick="doRemoteFrontPanel(true);" onmouseout="window.status=''; return true;"
+                           onmouseover="window.status='Full Scope Remote Front Panel'; return true;">
+                           Real Scope Remote Front Panel</A> if you have high resolution monitor</LI>
+                           <LI><A href="#" onclick="doRemoteFrontPanel(false);" onmouseout="window.status=''; return true;"
+                           onmouseover="window.status='Simple Remote Front Panel'; return true;">
+                           Simple Remote Front Panel</A> if you have low resolution monitor</LI>
+                           <LI><A href="#" onclick="doBrowserBasedRemoteFrontPanel();" onmouseout="window.status=''; return true;" 
+                           onmouseover="window.status='Browser-Based Remote Front Panel'; return true;">
+                           Tablet Remote Front Panel</A> for HTML5 web browser</LI>
+                        </UL>
+                        <BR>
+                        <BR>
+                        <BR>
+                        <H3>
+                           <SPAN>Remote Programming </SPAN>
+                        </H3>
+                        <HR noshade size="1">
+                        If you select <A href="#" onclick="doSCPICommands()" onmouseout="window.status=''; return true;"
+                           onmouseover="window.status='Remote Programming'; return true;">Remote Programming</A>,
+                        you can send SCPI commands to your
+
+                        <SCRIPT language="JavaScript" type="text/javascript">
+                           document.write(goScopeInfo.sModel)
+                        </SCRIPT>
+
+                        &nbsp;oscilloscope.
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+</BODY>
+</HTML>
