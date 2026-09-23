@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<install>
+	<!-- Set the ramdisk to 68MB -->
+	<ramdiskSize>71303168</ramdiskSize>
+	<!-- Stop the scope application -->
+	<killProcess>infiniivisionLauncher.exe</killProcess>
+	<killProcess>AgilentLxiWebService.exe</killProcess>
+	<!-- Update CE Kernel -->
+	<installStep>
+		<file checksum="1b75ee2d9d0d9362143bd2ea63a579b8">nk.bin.comp</file>
+		<command>\windows\loadP500Flash -u ceImage1 %TEMP%\nk.bin.comp</command>
+	</installStep>
+	<!-- Try to update DSO2000 FPGA -->
+	<installStep>
+		<file checksum="8ce5e39ae054a7b03ef0cd1ee8beb57f">fpga2000a.bin</file>
+		<command>\windows\loadP500Flash -u fpga --target economy %TEMP%\fpga2000a.bin</command>
+	</installStep>
+	<!-- Try to update DSO3000 FPGA -->
+	<installStep>
+		<file checksum="c4e4174ad6bb5e5145ef66dfe15f9b94">fpga3000a.bin</file>
+		<command>\windows\loadP500Flash -u fpga --target performance %TEMP%\fpga3000a.bin</command>
+	</installStep>
+	<!-- Update scope application -->
+	<installStep>
+		<file checksum="878cd57c76d0a4385040577bf03bc4e5">infiniivisionSetup.cab</file>
+		<command>\windows\wceldcmd.exe /delete 0 %TEMP%\infiniivisionSetup.cab</command>
+	</installStep>
+	<!-- Update startup splash screen -->
+	<!-- Please read the release notes for the 2.01 release for details to install your own splash screen -->
+	<installStep>
+		<file checksum="83257c1af67a93fb68c18cf424d6ca70">splashImage.png</file>
+		<command>\windows\compileImageForSplashScreen.exe %TEMP%\SplashImage.png \Secure\InfiniiVision\splashImage.bin</command>
+	</installStep>
+	<!-- Reboot -->
+	<installStep>
+		<command>\windows\rebootInfiniivision.exe</command>
+	</installStep>
+	<boardLoadOptions>
+		<ECC>4</ECC>
+	</boardLoadOptions>
+</install>
