@@ -1,0 +1,72 @@
+A { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 12px; 
+    color: #003399; 
+    font-weight: normal; 
+    font-style: normal; 
+    text-decoration: underline; }
+A.weblink {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: white;
+	text-decoration: none; }
+	input {font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: normal; font-style: normal;text-decoration: none; text-align: center; vertical-align: middle; margin: 0;}
+BODY { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: black; font-weight: normal; font-style: normal; background-color: white; text-decoration: none; vertical-align: middle; margin: 0; }
+H1 { font-family: Arial, Helvetica, sans-serif; font-size: 21px; font-weight: bold; background-color: white; color: #336699 ; vertical-align: top; margin: 0; padding: 0; }
+H2 { font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; background-color: white; color: #336666  ; vertical-align: top; margin: 0; padding: 0; }
+H3, .advLink { font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; color: #336666 ; background-color: white; vertical-align: top; margin: 0; padding: 0; }
+TD { font-family: Arial, Helvetica, sans-serif;  color: black; font-size: 12px; font-weight: normal; font-style: normal; background-color: white; text-decoration: none; text-align: left; vertical-align: top; margin: 0; }
+TH { font-family: Arial, Helvetica, sans-serif; color: black; font-size: 12px; font-weight: bold; font-style: normal; background-color: #cccccc; text-decoration: none; text-align: center; vertical-align: middle; margin: 0; }
+TD.dataGray { font-family: Arial, Helvetica, sans-serif;  font-size: 12px; font-weight: normal; color: black; background-color: #cccccc; text-decoration: none; text-align: center; vertical-align: middle; }
+TD.dataWhite { font-family: Arial, Helvetica, sans-serif;  font-size: 12px; font-weight: normal; color: black; background-color: white; text-decoration: none; text-align: center; vertical-align: middle; }
+TD.dataWhiteLeft { font-family: Arial, Helvetica, sans-serif;  font-size: 12px; font-weight: normal; color: black; background-color: white; text-decoration: none; text-align: left; vertical-align: middle; }
+TD.labelBlue { font-family: Arial, Helvetica, sans-serif;  color: white; font-size: 12px; font-weight: bold; font-style: normal; background-color: #336699; text-decoration: none; text-align: right; vertical-align: middle; }
+TH.labelGray { font-family: Arial, Helvetica, sans-serif;  color: black; font-size: 12px; font-weight: bold; font-style: normal; background-color: #cccccc; text-decoration: none; text-align: center; vertical-align: top; }
+TD.navBar { 
+    background-color: white; 
+    width: 120px;
+    height: 10px;
+    text-align: right; 
+    vertical-align: top; }
+TD.navKey { 
+    background-color: white; 
+    width: 120px;
+    height: 30px;
+    text-align: right; 
+    vertical-align: middle; }
+
+SELECT.dataWhite { font-family: Arial, Helvetica, sans-serif;  font-size: 12px; font-weight: normal; color: black; background-color: white; text-decoration: none; text-align: left; vertical-align: middle; }
+INPUT.stdFont{ font-family: Arial, Helvetica, sans-serif;  font-size: 12px; font-weight: normal; color: black; background-color: inherit; text-decoration: none; text-align: left; vertical-align: middle; }
+
+.darkGrayBanner {
+	color: white;
+	background-color: #666666;
+	vertical-align: middle; }
+.blueBanner {
+	color: #ffffff;
+	height: 63px;
+	text-align: left;
+	font-size: 16pt;
+	background-color: #336699;
+	vertical-align: middle; }
+.blueLine {
+	height: 2px;
+	background-color: #336699; }	
+.links {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	color: #ffffff;
+	text-decoration: none }
+	
+.text {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000 }
+.textbold {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #ffffff;
+	font-weight: bold }

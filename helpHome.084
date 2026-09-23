@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--#include file="helpVar.asp"-->
+<HTML>
+<HEAD>
+   <TITLE>Help Home </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="helpStyle.css" rel="stylesheet" title="WebEnabled" type="text/css">
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+      <!-- Begin logos row - middle logo is instrument specific -->
+      <TR bgcolor="#FFFFFF">
+         <TD bgcolor="#FFFFFF" height="60" valign="MIDDLE" width="230">
+            <IMG alt="Agilent" border="0" height="60" src="../image/agilent.gif" width="230">
+         </TD>
+         <TD bgcolor="#336699" class="blue" height="60" valign="top">
+            <IMG alt="" src="../image/instrumentBanner.gif"></TD>
+      </TR>
+      <!-- End logos row -->
+      <TR>
+         <TD bgcolor="#336699" class="blue" colspan="2">
+            <IMG alt="" height="2" src="../image/filltrans.gif"></TD>
+      </TR>
+   </TABLE>
+   <H1>
+      Welcome Page Help</H1>
+   <P>
+      The <I>Agilent Technologies</I> web pages for the
+      <%=sModel%>
+      &nbsp;will assist you in getting your system up and running as quickly as possible.
+      If you have trouble with the instrument, you may contact Agilent by clicking on
+      the "Support" link that appears on the top banner of the web pages. On the left
+      side of the
+      <%=sModel%>
+      &nbsp;web pages, you will find a column of Navigation tabs. Use these tabs to select
+      which part of the instrument to view or modify. See the <A href="helpNav.asp?Model=<%Response.Write sModel%>">
+      Navigation Help Page</A>&nbsp;for more explanation on each of these Navigation
+      tabs.
+   </P>
+   <P>
+      The <B>Welcome Page </B>displays the basic I/O configuration information about the
+      Agilent
+      <%=sModel%>. This information can be used in forming the addresses needed to run
+      SICL or VISA programs. The information cannot be modified on the Welcome Page. You
+      must use the "Configure Network" page for that.
+   </P>
+   <P>
+      This page includes:
+      <UL>
+         <LI>Instrument
+            <P>
+               This field shows the instrument model number and name.
+            </P>
+         </LI>
+         <LI>Serial Number
+            <P>
+               This field shows the serial number for this instrument.
+            </P>
+         </LI>
+         <LI>Description
+            <P>
+               This field shows the description of the instrument that is used throughout its web
+               pages.
+            </P>
+         </LI>
+         <LI>Hostname
+            <P>
+               This field shows the Internet domain name for the instrument. If this field is blank,
+               then the instrument could not determine its name. This could be because the instrument
+               doesn't have access to a DNS server. Depending upon what type of servers that you
+               have, you may be able to use this name to connect to the instrument.
+            </P>
+         </LI>
+         <LI>IP Address
+            <P>
+               This field shows the IP address of the instrument. The currently displayed IP Address
+               may have been established by one of three ways:<BR>
+            </P>
+            <UL>
+               <LI>The address was obtained from a DHCP server during power-on. </LI>
+               <LI>DHCP is turned off or unavailable on the network and the IP address was selected
+                  using Automatic Private IP Addressing (AutoIP). </LI>
+               <LI>DHCP is turned off or unavailable on the network, AutoIP is turned off and the
+                  static IP address was used. </LI>
+            </UL>
+            <P>
+            </P>
+         </LI>
+         <LI>VISA TCP/IP Connect String
+            <P>
+               This field shows a connect string that may be used when making a programmatic connection
+               with VISA over TCP/IP.
+            </P>
+         </LI>
+         <LI>Advanced Information
+            <P>
+               Click on this button to bring up more instrument information
+            </P>
+         </LI>
+         <LI>Identification
+            <P>
+               The Identification control enables a front panel indication of the instrument serving
+               the web page. This is very helpful when you need to physically locate a specific
+               instrument within a group of instruments.
+            </P>
+         </LI>
+      </UL>
+</BODY>
+</HTML>

@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<!--#include file="appletsVersion.asp"-->
+<%
+   Dim gsHostname
+   Dim gsDesc
+   Dim gsScpiFilename
+   Dim gsJnlpFilename
+   Dim gsFullJnlpFilename
+   Dim gbWriteFile
+   Dim goFileSystem
+   
+   gsHostname = Request.QueryString("hn")
+   gsDesc = Request.QueryString("dc")
+   gsScpiFilename = Request.QueryString("fn")
+   gsJnlpFilename = gsHostname + "_io.jnlp"
+   gsFullJnlpFilename = Server.MapPath(gsJnlpFilename)
+   gbWriteFile = False
+   
+   Set goFileSystem = CreateObject("infiniiVisionWebCom.FileSystem")
+   If (not goFileSystem is nothing) Then
+      'Response.Write gsFullJnlpFilename & "<BR />"
+      If (goFileSystem.IsFileExist(gsFullJnlpFilename) <> False) Then
+         'Response.Write "file exist, check for changes <BR />"
+         If (goFileSystem.OpenFileRO(gsFullJnlpFilename) <> False) Then
+            If (IsJnlpFileValid(goFileSystem) = False) Then
+               'Response.Write "file not valid <BR />"
+               goFileSystem.CloseFile
+               gbWriteFile = goFileSystem.OverwriteFile(gsFullJnlpFilename)
+            Else
+               goFileSystem.CloseFile
+            End If
+            
+         End If
+      Else
+         'Response.Write "file not exist, create new file <BR />"
+         gbWriteFile = goFileSystem.CreateNewFile(gsFullJnlpFilename)
+      End If
+   End If
+   
+   If (gbWriteFile <> False) Then
+      WriteJnlpFile goFileSystem
+      goFileSystem.CloseFile
+   End If
+   Set goFileSystem = Nothing
+   
+   Function IsJnlpFileValid(fileSystem)
+      'Response.Write "CheckJnlpFile <br />"
+      If (fileSystem.Find("<title>" + gsDesc + "</title>") = False)  Then
+         'Response.Write gsDesc + "<br />"
+         IsJnlpFileValid = False
+         Exit Function
+      End If
+
+      If (fileSystem.Find("<j2se href=""http://java.sun.com/products/autodl/j2se"" version=""" + gsJREVersion + "+"" />") = False) Then
+         IsJnlpFileValid = False
+         Exit Function
+      End If
+
+      If (fileSystem.Find("<jar href=""" + gsScpiFilename + """  main=""true""/>") = False) Then
+         'Response.Write gsScpiFilename + "<br />"
+         IsJnlpFileValid = False
+         Exit Function
+      End If
+      IsJnlpFileValid = True
+   End Function
+   
+   Sub WriteJnlpFile(fileSystem)
+      'Response.Write "WriteJnlpFile"
+      fileSystem.WriteLn "<?xml version=""1.0"" encoding=""UTF-8""?>"
+      fileSystem.WriteLn "<jnlp spec=""1.0+"" codebase=""http://" + gsHostname + """ href=""" + gsJnlpFilename + """>"
+      fileSystem.WriteLn "   <information>"
+      fileSystem.WriteLn "      <title>" + gsDesc + "</title>"
+      fileSystem.WriteLn "      <vendor>Agilent Technologies</vendor>"
+      fileSystem.WriteLn "   </information>"
+      fileSystem.WriteLn "   <resources>"
+      fileSystem.WriteLn "      <j2se href=""http://java.sun.com/products/autodl/j2se"" version=""" + gsJREVersion + "+"" />"
+      fileSystem.WriteLn "      <jar href=""" + gsScpiFilename + """ main=""true""/>"
+      fileSystem.WriteLn "   </resources>"
+      fileSystem.WriteLn "   <application-desc name=""" + gsDesc + """ main-class=""remoteIo.mainDlg"">"
+      fileSystem.WriteLn "      <argument>-ipAddress=" + gsHostname + "</argument>"
+      fileSystem.WriteLn "      <argument>-scpiPort=5025</argument>"
+      fileSystem.WriteLn "      <argument>-title=" + gsDesc + "</argument>"
+      fileSystem.WriteLn "   </application-desc>"
+      fileSystem.WriteLn "</jnlp>"
+   End Sub
+%>
+
+<HTML>
+<HEAD>
+   <META http-equiv="Cache-Control" content="no-cache">
+   <META http-equiv="Pragma" content="no-cache">
+   <META http-equiv="Expires" content="0">
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   <TITLE>Remote Programming </TITLE>
+
+   <SCRIPT type="text/javascript" src="utils.js"></SCRIPT>
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+      remoteHelpWindow = null;
+      var goScopeInfo = new parent.ScopeInfo();
+      var goLanInfo = new parent.LanInfo();
+      var gsVersion = getAppletVersion(goScopeInfo.sFirmwareRev, "<%=gsAppletScpiVersion%>");
+ 
+      function openBrowserWindow(url)
+      {
+         window.open(url, 'out', 'toolbar=yes,location=yes,menubar=yes,scrollbars=yes, resizable=yes,width=640,height=400,screenX=150,screenY=150');
+      }
+
+      function getHelp()
+      {
+         if (!remoteHelpWindow || remoteHelpWindow.closed)
+            remoteHelpWindow = window.open('help/helpRemoteSCPICommands.asp?Model=' + goScopeInfo.sModel, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+         if (remoteHelpWindow) remoteHelpWindow.focus();
+      }
+
+      function displayApplet()
+      {
+         var _app = navigator.appName;
+
+         if (_app == 'Netscape')
+         {
+            if (!navigator.javaEnabled())
+            {
+               document.write('<DIV style="background:#F0F0F0;padding:1em">' +
+                              'Failed to start the SCPI Command applet. Java is disabled.<\/DIV>');
+               return;
+            }
+
+            document.write('<EMBED type="application/x-java-applet;version=<%=gsJREVersionShort%>" ',
+                         'code="remoteIo/mainApplet.class" ',
+                         'width="600" height="400" hspace="0" vspace="0" ',
+                         'boxbgcolor="#FFFFFF" align="bottom" ',
+                         'archive=""',
+                         'cache_option="No"',
+                         'cache_archive="' + goScopeInfo.sScpiFilename + '"',
+                         'cache_version="' + gsVersion + '" ',
+                         'pluginspage="http://java.com/en/download/index.jsp" ',
+                         'ipAddress="' + location.hostname + '" ',
+                         'scpiPort="5025"',
+                         'title="' + goLanInfo.sDescription + '">',
+                         '<NOEMBED> ',
+                         '<DIV style="background:#F0F0F0;padding:1em">',
+                         'Failed to start the SCPI Command applet. This can happen when:',
+                         '<UL>',
+                         '   <LI>Your browser needs permission to run the Java applet. In this case, you can give your browser permission to run the applet (for example, by clicking the yellow Information bar).<\/LI>',
+                         '   <BR>',
+                         '   <LI>There is no <%=gsJREVersionLong & " "%> or greater installed. In this case, you can download and install the latest Java SE Runtime Environment from <A HREF="http:\/\/java.com\/en\/download\/index.jsp" target="_blank">Free Java Download.<\/A><\/LI>',
+                         '<\/UL>',
+                         '<\/DIV>',
+                         '<\/NOEMBED> ',
+                         '<\/EMBED>');
+         }
+         else if (_app == 'Microsoft Internet Explorer')
+         {
+            var _nAgt = navigator.userAgent;
+            var _fullVersion = 0;
+            var _majorVersion = 0;
+
+            // In Internet Explorer, the true version is after "MSIE" in userAgent
+            if ((verOffset = _nAgt.indexOf("MSIE")) != -1)
+            {
+               _fullVersion = parseFloat(_nAgt.substring(verOffset + 5));
+               _majorVersion = parseInt('' + _fullVersion);
+            }
+
+            if (_majorVersion == 6)
+            {
+               //this fixes the KB912945 click to activate problem
+               document.write('<NOSCRIPT class=clickfix><OBJECT style=\"display:none\">');
+            }
+
+            document.write('<OBJECT ',
+                         'classid="<%=gsClassid%>"',
+                         'codebase="<%=gsCodebase%>"',
+                         'width="600" height="400" hspace="0" vspace="0"',
+                         'align="bottom">',
+                         '<PARAM NAME="archive" VALUE="">',
+                         '<PARAM NAME="cache_option" VALUE="No">',
+                         '<PARAM NAME="cache_archive" VALUE="' + goScopeInfo.sScpiFilename + '">',
+                         '<PARAM NAME="cache_version" VALUE="' + gsVersion + '">',
+                         '<PARAM NAME="code" VALUE="remoteIo.mainApplet.class">',
+                         '<PARAM NAME="boxbgcolor" value="#FFFFFF">',
+                         '<PARAM NAME="ipAddress" VALUE = "' + location.hostname + '">',
+                         '<PARAM NAME="scpiPort" VALUE = "5025">',                         
+                         '<PARAM NAME="scriptable" VALUE="true">',
+                         '<PARAM NAME="title" VALUE="' + goLanInfo.sDescription + '">',
+                         '<DIV style="background:#F0F0F0;padding:1em">',
+                         'Failed to start the SCPI Command applet. This can happen when:',
+                         '<UL>',
+                         '   <LI>Your browser needs permission to run the Java applet. In this case, you can give your browser permission to run the applet (for example, by clicking the yellow Information bar).<\/LI>',
+                         '   <BR>',
+                         '   <LI>There is no <%=gsJREVersionLong & " "%> or greater installed. In this case, you can download and install the latest Java SE Runtime Environment from <A HREF="http://java.com/en/download/index.jsp" target="_blank">Free Java Download.<\/A><\/LI>',
+                         '<\/UL>',
+                         '<\/DIV>',
+                         '<\/OBJECT>');
+
+            if (_majorVersion == 6)
+            {
+               //this fixes the KB912945 click to activate problem
+               document.write('<\/OBJECT><\/NOSCRIPT>');
+            }
+         }
+         else
+         {
+            document.write('<P>Sorry, unsupported browser.<\/P>');
+         }
+      }
+
+      function writeJnlpLink()
+      {
+         var browser = getBrowser(navigator.userAgent);
+
+         if (browser == "MSIE" || browser == "Firefox")
+         {
+            document.write('<BR><BR><FONT color="#FF0000"><B>Tips<\/B><\/FONT>: <BR>' +
+                           'You can now launch the Remote Programming without starting a browser. ' +
+                           '<BR />Simply create a shortcut to <A href="' + location.hostname + '_io.jnlp" ' +
+                           'onmouseover="window.status=\'Java Web Start Remote Programming\'; return true;"' +
+                           'onmouseout="window.status=\'\'; return true;">' + 
+                           goLanInfo.sDescription + ' Remote Programming<\/A> by, right click over the above hyperlink, ' +
+                           'select <I>Copy Shortcut<\/I>, then right click on your PC Desktop ' +
+                           'and select <I>Paste Shortcut<\/I>.  It is recommended to set Internet Explorer as the default browser with this capability.');
+         }
+      }
+      -->
+   </SCRIPT>
+
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="12" cellspacing="0" width="100%">
+      <TR align="left" valign="TOP">
+         <TD align="RIGHT" valign="BOTTOM" width="800">
+            <DIV align="LEFT">
+               <TABLE border="0" cellpadding="5" cellspacing="0" width="800">
+                  <TR>
+                     <TD width="100%">
+                        <H3>
+                           <SPAN>Remote Programming </SPAN>
+                        </H3>
+                        <HR noshade size="1">
+                        You can send remote programming commands directly to your 
+                        
+                        <SCRIPT language="JavaScript" type="text/javascript">
+                           document.write(goScopeInfo.sModel)
+                        </SCRIPT>
+                                             
+                        &nbsp;oscilloscope using the tool below. For more information about the commands,
+                        see the <A href="#" onclick="openBrowserWindow('InfiniiVision_Quick_Reference.html')"
+                           onmouseout="window.status=''; return true;" onmouseover="window.status='Programming Commands Quick Reference'; return true;">
+                           Programming Commands Quick Reference</A>.
+                        <BR>
+                        <BR>
+                        <SCRIPT language="JavaScript" type="text/javascript">
+                           displayApplet();
+                        </SCRIPT>
+                        <SCRIPT language="JavaScript" type="text/javascript">
+                           writeJnlpLink();
+                        </SCRIPT> 
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+   <!-- this script is used to workaround KB912945 click to activate problem -->
+
+   <SCRIPT language="JScript" type="text/jscript" src="ClickFix.js"></SCRIPT>
+
+</BODY>
+</HTML>

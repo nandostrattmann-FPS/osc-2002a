@@ -1,0 +1,161 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--#include file="helpVar.asp"-->
+<HTML>
+<HEAD>
+   <TITLE>Help </TITLE>
+   <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <LINK href="helpStyle.css" rel="stylesheet" title="WebEnabled" type="text/css">
+</HEAD>
+<BODY>
+   <TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+      <!-- Begin logos row - middle logo is instrument specific -->
+      <TR bgcolor="#FFFFFF">
+         <TD valign="MIDDLE" bgcolor="#FFFFFF" width="230" height="60">
+            <IMG src="../image/agilent.gif" width="230" height="60" border="0" alt="Agilent">
+         </TD>
+         <TD valign="top" bgcolor="#336699" class="blue" height="60">
+            <IMG src="../image/instrumentBanner.gif" alt=""></TD>
+      </TR>
+      <!-- End logos row -->
+      <TR>
+         <TD colspan="2" bgcolor="#336699" class="blue">
+            <IMG src="../image/filltrans.gif" height="2" alt=""></TD>
+      </TR>
+   </TABLE>
+   <H1>
+      Current Network Configuration Help</H1>
+   <P>
+      The <B>Current Network Configuration</B> page lets you view the network settings of the
+      <%=sModel%>
+      &nbsp;oscilloscope. These settings configure the instrument to operate in your specific
+      network environment. The web page that appears when the "Configure Network" navigation
+      tab is clicked is the Current Network Configuration page. This page shows the current settings
+      that are in effect. If you wish to modify a parameter, you must click the "Modify
+      Configuration" button.
+   </P>
+   <P>
+      The parameters on the Current Network Configuration page include:
+   </P>
+   <UL>
+      <LI>Configuration mode
+         <P>
+            This shows whether network configuration parameters (IP Address, 
+			Subnet Mask, and Default Gateway) are determined automatically 
+			(using DHCP and Auto IP) or set 
+			manually.
+         </P>
+      </LI>
+      <LI>Dynamic DNS
+         <P>
+            This parameter shows whether Dynamic DNS is enabled. If your network 
+			provides Dynamic DNS, this option lets the oscilloscope register its 
+			hostname and use the DNS server for name resolution.
+         </P>
+      </LI>
+      <LI>NetBIOS
+         <P>
+            This parameter shows if NetBIOS Naming Service is enabled. NetBIOS is a peer-to-peer
+            naming protocol which allows systems to have hostnames without the existence of
+            centralized name servers. NetBIOS Naming Service is useful for isolated subnets
+            or direct connections with a crossover cable.
+         </P>
+      </LI>
+      <LI>Multicast DNS
+         <P>
+            This parameter shows whether Multicast DNS is enabled. This lets 
+			the oscilloscope use Multicast DNS for name resolution on small 
+			networks without a conventional DNS server.
+         </P>
+      </LI>
+      <LI>Multicast DNS
+         Description
+         <P>
+            This parameter shows the oscilloscope's Multicast DNS description.          </P>
+      </LI>
+      <LI>IP Address
+         <P>
+            This is the Internet Protocol (IP) address of the instrument. The IP address is
+            used for all TCP/IP communications with the instrument. If the 
+			Configuration mode is Automatic, the IP address was assigned by these means. If 
+			the Configuration mode is Manual, the IP address shown on the Modify Configuration page was used.
+         </P>
+      </LI>
+      <LI>Subnet Mask
+         <P>
+            This parameter is used to enable the instrument to determine if an IP Address is
+            on the same local subnet as the
+            <%=sModel%>
+            &nbsp;itself. When an address is on a different subnet, all packets must be sent
+            to a gateway. If the Configuration mode is Automatic, the subnet mask was assigned
+            by these means. If the Configuration mode is Manual, the subnet mask shown on the Modify
+            Configuration page was used.
+         </P>
+      </LI>
+      <LI>Default Gateway
+         <P>
+            This is the IP address of the default subnet gateway that allows the instrument
+            to communicate with systems that are not on the local subnet. Packets which are
+            destined for a device not on the local subnet, as determined by the subnet mask
+            setting, are sent to the default gateway. If the Configuration mode 
+			is Automatic, the default gateway
+            was assigned by the DHCP server. If the Configuration mode is Manual 
+			or if DHCP was unavailable on the
+            network, the default gateway shown on the Modify Configuration page was used.
+         </P>
+      </LI>
+      <LI>DHCP Server
+         <P>
+            TThis parameter shows the IP address of the DHCP server. It is only 
+			displayed if the Configuration mode is Automatic and the instrument obtained its IP address from a DHCP server.
+         </P>
+      </LI>
+      <LI>DNS Server(s)
+         <P>
+            This parameter shows the IP address of the Domain Name System (DNS) server. This
+            server provides a hostname given an IP Address for a LAN device based on entries
+            in its DNS lookup table. If a DNS server was entered on the Modify Configuration
+            page, then that DNS server is used. If a DNS server is not entered, and 
+			the Configuration mode is Automatic, up to three of DNS servers may 
+			have been returned by the DHCP server at power-on. If the DNS server 
+			address is unknown or incorrect, then the instrument will be unable 
+			to determine its name on the network. 
+      </LI>
+      <LI>Hostname
+         <P>
+            This parameter shows the Internet hostname for the instrument. Depending upon what
+            type of servers that you have, you may be able to use this name to connect to the
+            instrument. If this field is blank, then the instrument was unable to find its name.
+            This may be because the DNS server address is unknown or incorrect.
+         </P>
+      </LI>
+      <LI>Domain
+         <P>
+            This parameter shows the Internet domain for the instrument.
+         </P>
+      </LI>
+<%If sModelSeries = "3000" OR sModelSeries = "2000" Then%>
+      <LI>GPIB Control
+         <P>
+            This parameter is ON when a GPIB module is present.
+         </P>
+      </LI>
+      <LI>GPIB Address
+         <P>
+            This parameter shows the instrument's GPIB bus address. This address is used when
+            transfers are made on the GPIB bus.
+         </P>
+      </LI>
+<%End If%>
+      <LI>USB Control
+         <P>
+            This parameter is ON when a USB device port is present.
+         </P>
+      </LI>
+      <LI>LAN Control
+         <P>
+            This parameter is ON when a LAN module is present.
+         </P>
+      </LI>
+   </UL>
+</BODY>
+</HTML>

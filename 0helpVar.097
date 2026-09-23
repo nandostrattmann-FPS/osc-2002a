@@ -1,0 +1,5 @@
+<%
+sModel = Request.QueryString("Model")
+sModelSeries = Request.QueryString("ModelSeries")
+%>  
+

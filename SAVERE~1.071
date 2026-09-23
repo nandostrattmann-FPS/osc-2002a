@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<!--#include file="pwdEnum.asp"-->
+<HEAD>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   <TITLE>Browser Web Control </TITLE>
+
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+      var saveRecallHelpWindow = null;
+      var goScopeInfo = new parent.ScopeInfo();
+
+      function openBrowserWindow(url)
+      {
+         window.open(url, 'out', 'toolbar=yes,location=yes,menubar=yes,scrollbars=yes, resizable=yes,width=640,height=400,screenX=150,screenY=150');
+      }
+
+      function getHelp()
+      {
+         if (!saveRecallHelpWindow || saveRecallHelpWindow.closed)
+            saveRecallHelpWindow = window.open('help/helpSaveRecall.asp?Model=' + goScopeInfo.sModel, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+         if (saveRecallHelpWindow) saveRecallHelpWindow.focus();
+      }
+      
+      function openRecall()
+      {
+         window.parent.content.location = "pwdVerify.asp?state=skip&page=<%=PWD_RECALL%>";
+      }
+      -->
+   </SCRIPT>
+
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="12" cellspacing="0" width="100%">
+      <TR align="left" valign="TOP">
+         <TD align="RIGHT" valign="TOP" width="800" rowspan="4">
+            <DIV align="LEFT">
+               <TABLE border="0" cellpadding="5" cellspacing="0" width="800">
+                  <TR>
+                     <TD width="100%">
+                        <H3>
+                           <SPAN>Save</SPAN>
+                        </H3>
+                        <HR noshade size="1">
+                        If you select <A href="saveFrame.asp" 
+                                       onmouseout="window.status=''; return true;"
+                                       onmouseover="window.status='Save from web'; return true;">
+                                       Save</A>, you can save your 
+                        <SCRIPT language="JavaScript" type="text/javascript">
+                           document.write(goScopeInfo.sModel)
+                        </SCRIPT>&nbsp;oscilloscope files to your PC.
+                        <BR>
+                        <BR>
+                        <BR>
+                        <H3>
+                           <SPAN>Recall </SPAN>
+                        </H3>
+                        <HR noshade size="1">
+                        If you select
+                        <SCRIPT language="JavaScript" type="text/javascript">
+                           document.write('<A href=\"#\"' +
+                                          'onclick=\"openRecall();\"' +
+                                          'onmouseout=\"window.status=\'\'; return true;\"'  +
+                                          'onmouseover=\"window.status=\'Recall from web\'; return true;\">' +
+                                          'Recall<\/A>')
+                        </SCRIPT>&nbsp;oscilloscope, you can recall files from your PC to your
+                        <SCRIPT language="JavaScript" type="text/javascript">
+                           document.write(goScopeInfo.sModel)
+                        </SCRIPT>&nbsp;oscilloscope.
+                        <BR>
+                        <BR>
+                        <BR>                     
+                        <H3>
+                           <SPAN>Data Access </SPAN>
+                        </H3>
+                        <HR noshade size="1">
+                        To develop your own customized data access, go to the 
+                        <A href="#" 
+                           onclick="openBrowserWindow('http://www.agilent.com/find/ivi')"
+                           onmouseout="window.status=''; return true;" 
+                           onmouseover="window.status='www.agilent.com/find/ivi'; return true;">
+                           IVI-COM and IVI-C Drivers web site</A>&nbsp;and find <B>InfiniiVision</B>
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+</BODY>
+</HTML>

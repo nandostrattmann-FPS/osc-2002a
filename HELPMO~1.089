@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--#include file="helpVar.asp"-->
+<HTML>
+<HEAD>
+   <TITLE>Help </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="helpStyle.css" rel="stylesheet" title="WebEnabled" type="text/css">
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+      <!-- Begin logos row - middle logo is instrument specific -->
+      <TR bgcolor="#FFFFFF">
+         <TD bgcolor="#FFFFFF" height="60" valign="MIDDLE" width="230">
+            <IMG alt="Agilent" border="0" height="60" src="../image/agilent.gif" width="230">
+         </TD>
+         <TD bgcolor="#336699" class="blue" height="60" valign="top">
+            <IMG alt="" src="../image/instrumentBanner.gif"></TD>
+      </TR>
+      <!-- End logos row -->
+      <TR>
+         <TD bgcolor="#336699" class="blue" colspan="2">
+            <IMG alt="" height="2" src="../image/filltrans.gif"></TD>
+      </TR>
+   </TABLE>
+   <H1>
+      Modify Network Configuration Help</H1>
+   <P>
+      The <B>Modify Network Configuration </B>page lets you view and modify the network settings
+      of the
+      <%=sModel%>
+      &nbsp;oscilloscope. The web page that appears when the "Configure Network" navigation
+      tab is clicked is the Current Configuration page. If you wish to modify a setting,
+      you must click the &quot;Modify Configuration&quot; button.
+   </P>
+   <P>
+      These settings configure the instrument to operate in your specific network environment.
+      Changes you make to configuration parameters are not effective until the "Apply
+      Changes" button is clicked. The "Undo Changes" button will undo any changes made
+      prior to clicking the "Apply Changes" button or pressing the "Enter" key.
+   </P>
+   <P>
+      IP Settings may be configured using the following:
+      <UL>
+         <LI>Automatic
+            <P>
+               This parameter allows Automatic network configuration (via DHCP
+            and AutoIP) to be enabled or disabled. When disabled (OFF),
+            network configuration parameters must be entered manually.
+            </P>
+            <P>
+               Factory default: ON
+            </P>
+      <p><B>If Automatic network configuration is ON, the values for the following three parameters are
+         automatically determined. If Automatic network configuration is OFF
+     then the following three parameter values can be modified. </B></p>
+         </ul>
+         <p>IP Settings to use in non automatic mode:</p>
+         <ul>
+            <LI>IP Address
+               <P>
+                  This value is the Internet Protocol (IP) address of the instrument. An IP address
+                  is required for all IP and TCP/IP communications with the instrument. An IP Address
+                  is 4 decimal numbers separated by periods. Each decimal number ranges from 0 through
+                  255.
+               </P>
+               <P>
+                  Factory default: 169.254.254.254
+               </P>
+            </LI>
+            <LI>Subnet Mask
+               <P>
+                  This value is used to enable the
+                  <%=sModel%>
+                  &nbsp;to determine if a client IP address is on the same local subnet. When a client IP
+                  address is on a different subnet, all packets must be sent to the Default Gateway.
+               </P>
+               <P>
+                  A value of 0.0.0.0 or 255.255.255.255 indicates that no subnetting is to be done.
+               </P>
+               <P>
+                  Factory default: 255.255.248.0
+               </P>
+            </LI>
+            <LI>Default Gateway
+               <P>
+                  This value is the IP Address of the default subnet gateway that allows the instrument
+                  to communicate with systems that are not on the local subnet. This is the default
+                  subnet gateway where packets are sent which are destined for a device not on the
+                  local subnet, as determined by the subnet mask setting. A value of 0.0.0.0 indicates
+                  that no subnetting is to be done.
+                  <BR>
+               </P>
+               <P>
+                  Factory default: 169.254.254.254</P>
+            </LI>
+            </ul>
+            <p>Name service settings:</p>
+            <ul>
+            <LI>Hostname<P>
+                  If Dynamic DNS is available on your network, the Hostname parameter
+              is registered with the Dynamic DNS service at power-on. If left blank, the
+              hostname is set to a factory default value.
+               </P>
+               <P>
+                  A Hostname must start with a letter and may contain upper and lower case letters,
+                  numbers and dashes(-).
+               </P>
+               <P>
+                  Maximum length: 15 characters.</P>
+            </LI>
+            <LI>DNS Server
+               <P>
+                  This value is the address of the Domain Name System (DNS) server. DNS is an internet
+                  service that translates domain names into IP addresses. The instrument uses this
+                  server to determine and display its hostname.
+               </P>
+               <P>
+                  If DHCP and Dynamic DNS is available on your network, the DNS server parameter is not
+                  needed as the DHCP server will assign one or more DNS servers. If a value is entered
+                  for this field, then the entered value will be used and the server(s) returned by DHCP
+                  will not be used. If no DHCP is disabled, the DNS server parameter is needed for the
+                  instrument to be able to find and display its hostname.
+               </P>
+               <P>
+                  Factory default: 0.0.0.0 (no DNS server)
+               </P>
+            </LI>
+            <LI>Multicast DNS
+               <P>
+                  Enables or disables Multicast DNS. This lets the oscilloscope
+              use Multicast DNS for name resolution on small networks
+              without a conventional DNS server.
+               </P>
+               <P>
+                  Factory default: ON</P>
+            </LI>
+            </ul>
+            <p>Other settings:</p>
+            <ul>
+            <LI>Description
+               <P>
+                  This is the oscilloscope description.
+               </P>
+               <P>
+                  Factory default:  Oscilloscope model and serial number
+               </P>
+            </LI>
+      <LI>Password
+               <P>
+                  Whenever you connect the oscilloscope to a LAN, it is good
+              practice to set a password. The password prevents someone from
+              remotely accessing the oscilloscope via a Web browser and
+              changing parameters. Remote users can still view the Welcome
+              screen, view network status, etc., but they cannot operate the
+              instrument or change its setup without the password.
+               </P>
+               <P>
+                  Factory default: no password
+               </P>
+            </LI>
+      <LI>GPIB Address
+               <P>
+                  This parameter configures the GPIB bus Address. Every device on the GPIB bus must
+                  have a unique address. This address is used when transfers are made on the GPIB
+                  bus.
+               </P>
+               <P>
+                  Allowed values: 0 - 30. Factory default: 7
+               </P>
+            </LI>
+         </UL>
+</BODY>
+</HTML>

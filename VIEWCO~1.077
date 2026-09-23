@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<HTML>
+<!--#include file="pwdEnum.asp"-->
+<%
+   Dim goScopeInfo
+   Set goScopeInfo = CreateObject("infiniiVisionWebCom.ScopeInfo")
+   Dim goLanInfo
+   Set goLanInfo = CreateObject("infiniiVisionWebCom.LanInfo")
+%>
+<HEAD>
+   <TITLE>view config </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+      var confHelpWindow = null;
+
+      function doModifyConfig()
+      {
+         window.parent.content.location = "pwdVerify.asp?state=skip&page=<%=PWD_MODIFY_CONFIG%>";
+      }
+
+      function getHelp()
+      {
+         if (!confHelpWindow || confHelpWindow.closed)
+            confHelpWindow = window.open('help/helpViewConfig.asp?Model=' + "<%=goScopeInfo.Model%>" + 
+            "&ModelSeries=" + "<%=goScopeInfo.ModelSeries%>", 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150,left=150,top=150');
+         if (confHelpWindow) confHelpWindow.focus();
+      }
+
+      function showDNSIps()
+      {
+         var sDNSIps = "";
+
+         if ("<%=goLanInfo.Dns1Ip%>" != "0.0.0.0")
+         {
+            sDNSIps += "<%=goLanInfo.Dns1Ip%>";
+         }
+
+         if ("<%=goScopeInfo.Dns2Ip%>" != "0.0.0.0")
+         {
+            if (sDNSIps != "")
+            {
+               sDNSIps += ", ";
+            }
+            sDNSIps += "<%=goScopeInfo.Dns2Ip%>";
+         }
+
+         if ("<%=goScopeInfo.Dns3Ip%>" != "0.0.0.0")
+         {
+            if (sDNSIps != "")
+            {
+               sDNSIps += ", ";
+            }
+            sDNSIps += "<%=goScopeInfo.Dns3Ip%>";
+         }
+
+         document.write(sDNSIps);
+      }
+      -->
+   </SCRIPT>
+
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="10" cellspacing="0" width="100%">
+      <TR align="LEFT" valign="TOP">
+         <TD align="RIGHT" valign="BOTTOM" width="98%">
+            <DIV align="LEFT">
+               <TABLE border="0" cellpadding="0" cellspacing="2" width="100%">
+                  <TR>
+                     <TD width="456">
+                        <TABLE border="0" cellpadding="0" cellspacing="3" width="370">
+                           <TR>
+                              <TD colspan="2" width="370">
+                                 <H2>
+                                    &nbsp;
+                                 </H2>
+                              </TD>
+                           </TR>
+                           <TR valign="bottom">
+                              <TD width="20">
+                                 &nbsp;</TD>
+                              <TD valign="top" width="350">
+                                 <H1>
+                                    Current Network Configuration
+                                 </H1>
+                              </TD>
+                           </TR>
+                        </TABLE>
+                     </TD>
+                     <TD width="100%">
+                     </TD>
+                     <TD align="right" width="150">
+                        <IMG alt="LXI Compliant" border="0" height="63" src="image/lxi.jpg" width="93">&nbsp;&nbsp;&nbsp;&nbsp;
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+   <TABLE border="0" cellpadding="5" cellspacing="0" width="550">
+      <TR>
+         <TD>
+            <CENTER>
+               <INPUT type="button" name="modConfig" onclick="doModifyConfig()" onmouseout="window.status=''; return true;"
+                  onmouseover="window.status='Open editor for network settings'; return true;" value="Modify Configuration">
+            </CENTER>
+            <BR>
+         </TD>
+      </TR>
+      <TR>
+         <TD>
+            <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+               <TR>
+                  <TD class="dataGray" width="100%">
+                     <TABLE border="2" cellpadding="5" cellspacing="0" width="100%">
+                        <TR>
+                           <TD class="dataGray">
+                              <TABLE border="1" cellpadding="3" cellspacing="1" width="100%">
+                                 <TR>
+                                    <TH width="40%">
+                                       Parameter
+                                    </TH>
+                                    <TH width="60%">
+                                       Currently in use
+                                    </TH>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Configuration mode</TD>
+                                    <TD class="dataWhite">
+                                       <SCRIPT language="JavaScript" type="text/javascript">
+                                          var autoIp = "<%=goLanInfo.AutoIP%>";
+                                          if (autoIp == "ON")
+                                             document.write("Automatic");
+                                          else
+                                             document.write("Manual");
+                                       </SCRIPT></TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Dynamic DNS</TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.DnsState%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       NetBIOS</TD>
+                                    <TD class="dataWhite">
+                                       ON</TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Multicast DNS</TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.mDnsState%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Description</TD>
+                                    <TD class="dataWhite">
+                                       <%=goLanInfo.mDnsDesc%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       IP Address</TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.IpAddress%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Subnet Mask</TD>
+                                    <TD class="dataWhite">
+                                       <%=goLanInfo.SubnetMask%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Default Gateway</TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.Gateway%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       DNS Server(s)</TD>
+                                    <TD class="dataGray">
+                                       <SCRIPT language="JavaScript" type="text/javascript">
+                                          showDNSIps();
+                                       </SCRIPT></TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Hostname</TD>
+                                    <TD class="dataWhite">
+                                       <%=goLanInfo.Hostname%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       Domain</TD>
+                                    <TD class="dataGray">
+                                       <%=goScopeInfo.Domain%>
+                                    </TD>
+                                 </TR>
+<%If goScopeInfo.ModelSeries = "3000" OR goScopeInfo.ModelSeries = "2000" Then%>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       GPIB Control</TD>
+                                    <TD class="dataWhite">
+                                       <%=goLanInfo.GPIBControl%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       GPIB Address</TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.GpibAddress%>
+                                    </TD>
+                                 </TR>
+<%End If%>                                 
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       USB Control</TD>
+                                    <TD class="dataWhite">
+                                       <%=goLanInfo.USBControl%>
+                                    </TD>
+                                 </TR>
+                                 <TR>
+                                    <TD class="labelBlue">
+                                       LAN Control</TD>
+                                    <TD class="dataGray">
+                                       <%=goLanInfo.LANControl%>
+                                    </TD>
+                                 </TR>
+                              </TABLE>
+                           </TD>
+                        </TR>
+                     </TABLE>
+                  </TD>
+               </TR>
+            </TABLE>
+         </TD>
+      </TR>
+   </TABLE>
+</BODY>
+</HTML>

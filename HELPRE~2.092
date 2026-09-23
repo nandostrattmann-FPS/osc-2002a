@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--#include file="helpVar.asp"-->
+<!--#include file="..\appletsVersion.asp"-->
+<%
+   Dim gsStatus
+   Dim goScopeIpc
+   
+   gsStatus = Request.QueryString("status")
+   
+   If (gsStatus = "1") Then
+      Set goScopeIpc = CreateObject("infiniiVisionWebCom.ScopeIpc")
+      goScopeIpc.RestartRemoteFp
+   End If
+%>
+<HTML>
+<HEAD>
+   <TITLE>Help Remote Front Panel </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="helpStyle.css" rel="stylesheet" title="WebEnabled" type="text/css">
+
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+      function openBrowserWindow(url)
+      {
+         window.open(url, 'out', 'toolbar=yes,location=yes,menubar=yes,scrollbars=yes, resizable=yes,width=640,height=400,screenX=150,screenY=150');
+      }
+
+      function applyClick(formObj)
+      {
+         if (confirm("Are you sure you want to restart the remote front panel server? " + "(If you click OK, all remote front panel connections to this oscilloscope will be closed)"))
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+      }
+      -->
+   </SCRIPT>
+
+</HEAD>
+<BODY onload="document.reset.ContinueOn.value = 'False';">
+   <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+      <!-- Begin logos row - middle logo is instrument specific -->
+      <TR bgcolor="#FFFFFF">
+         <TD bgcolor="#FFFFFF" height="60" valign="MIDDLE" width="230">
+            <IMG alt="Agilent" border="0" height="60" src="../image/agilent.gif" width="230">
+         </TD>
+         <TD bgcolor="#336699" class="blue" height="60" valign="top">
+            <IMG alt="" src="../image/instrumentBanner.gif"></TD>
+      </TR>
+      <!-- End logos row -->
+      <TR>
+         <TD bgcolor="#336699" class="blue" colspan="2">
+            <IMG alt="" height="2" src="../image/filltrans.gif"></TD>
+      </TR>
+   </TABLE>
+   <H1>
+      Remote Front Panel Help</H1>
+   <P>
+      The <B>Remote Front Panel</B> allows you to control with your
+      <%=sModel%>
+      &nbsp;oscilloscope front panel remotely using a mouse and keyboard.
+   </P>
+   <H1>
+      Remote Front Panel Frequently Asked Questions
+   </H1>
+   <H2>
+      Why don't I see the remote front panel?</H2>
+   <DL>
+      <DD>
+         The remote front panel requires Sun Java Runtime Standard Edition version <%=(gsJREVersion + " ")%>
+         or greater. To download directly, go to <A href="#" onclick="openBrowserWindow('http://www.java.com/')"
+            onmouseout="window.status=''; return true;" onmouseover="window.status='www.java.com'; return true;">
+            http://www.java.com</A>.
+         <BR>
+         <BR>
+         If you still don't see the remote front panel, make sure java is enabled in your
+         browser and your security settings allow java applets to run.
+      </DD>
+   </DL>
+   <H2>
+      Why does the remote front panel occasionally not display?</H2>
+   <DL>
+      <DD>
+         If the remote front panel window doesn't display, and there are no error messages
+         then press the "Restart Remote Front Panel Server" button below. This will restart
+         the server running in the oscilloscope.
+         <BR>
+         <BR>
+         <CENTER>
+            <FORM method="POST" enctype="multipart/form-data" name="reset" onsubmit="return applyClick(this.form);"
+            accept="TEXT/PLAIN" action="helpRemoteFrontPanel.asp?status=1">
+            <INPUT name="restartServer" onmouseout="window.status=''; return true;"
+               onmouseover="window.status='Restart Remote Front Panel Server'; return true;"
+               type="SUBMIT" value="Restart Remote Front Panel Server">
+            </FORM>
+         </CENTER>
+      </DD>
+   </DL>
+   <H2>
+      Can I access the remote front panel through a firewall?</H2>
+   <DL>
+      <DD>
+         No, you can only access the remote front panel when both the oscilloscope and the
+         remote front panel display are within a firewall.</DD>
+   </DL>
+   <H2>
+      The Cut/Copy/Paste does not work in the remote front panel window?</H2>
+   <DL>
+      <DD>
+         The remote front panel window is not a standard Microsoft window. It is more like
+         a movie&nbsp; The Cut/Copy/Paste functions will not work.</DD>
+   </DL>
+   <H2>
+      How do I Copy/Paste the remote front panel window?</H2>
+   <DL>
+      <DD>
+         There are two ways to copy the remote front panel window. Press Ctrl+Alt+PrintScreen
+         or select the Get Image button from your oscilloscope's home page.</DD>
+   </DL>
+   <H2>
+      How is the remote front panel implemented?</H2>
+   <DL>
+      <DD>
+         The remote front panel is implemented using RealVNC.</DD>
+   </DL>
+   <BR>
+   <P>
+      VNC Viewer Free Edition</P>
+   <P>
+      Copyright (C) 2002-2005 RealVNC Ltd.</P>
+   <P>
+      See <A href="#" onclick="openBrowserWindow('http://www.realvnc.com/')" onmouseout="window.status=''; return true;"
+         onmouseover="window.status='www.realvnc.com'; return true;">http://www.realvnc.com</A>&nbsp;for
+      information on VNC.</P>
+</BODY>
+</HTML>

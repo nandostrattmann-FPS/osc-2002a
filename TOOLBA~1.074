@@ -1,0 +1,52 @@
+<SCRIPT language="JavaScript" type="text/javascript">
+   function showImages()
+   {
+      var imgPopupMenu = "popupMenu.jpg";
+      var imgSoftkey = "softKey.jpg";
+      if (goScopeInfo.sModelSeries == "2000" ||
+          goScopeInfo.sModelSeries == "3000")
+      {
+         imgPopupMenu = "popupMenu_wvga.jpg";
+         imgSoftkey = "softKey_wvga.jpg";
+      }
+      document.write('<IMG src="image/' + imgPopupMenu + '" alt="Popup menu" border="0"><BR>');
+      document.write('<IMG src="image/' + imgSoftkey + '" alt="Softkey" border="0"><BR>');
+   }
+</SCRIPT>
+
+<BR>
+The menu bar and toolbar represents the functionality of the knobs and keys on the oscilloscope front panel.<BR>
+The Remote Front Panel is set to accept text input on startup instead of the toolbar's single key shortcuts.<BR> 
+You can switch between text input or toolbar shortcut from the menu <I>Tools->Keyboard</I> or using function keys.
+
+<UL>
+   <LI>F11 - Toolbar shortcuts</LI>
+   <LI>F12 - Text input</LI>
+</UL>
+
+This is what the mouse can do
+<UL>
+   <LI>Softkey pressed - <I>left mouse click</I> on the specific softkey image. </LI>
+   <LI>Softkey help - <I>right mouse click</I> on the specific softkey image. 
+   <BR>
+   <SCRIPT language="JavaScript" type="text/javascript">
+      showImages();
+   </SCRIPT>
+   <FONT color="#FF0000"><B>Note</B></FONT>: <B>Don't click on the pop-up menu directly
+      to change the menu item. </B></LI>
+   <LI>Entry Knob (clockwise) - mouse wheel up. </LI>
+   <LI>Entry Knob (counter clockwise) - mouse wheel down. </LI>
+</UL>
+Toolbar's single key shortcuts for knob rotations and its push buttons (for some
+only).
+<UL>
+   <LI>Horizontal Scale - 'Q' - Increase, 'W' - Decrease</LI>
+   <LI>Horizontal Delay - 'A' - Increase, 'S' - Decrease</LI>
+   <LI>Trigger Level - 'T' - Increase, 'G' - Decrease</LI>
+   <LI>Intensity - 'I' - Increase, 'K' - Decrease</LI>
+   <LI>Cursor - 'X' - Push to Select, 'C' - Counter clockwise, 'V' - Clockwise</LI>
+   <LI>Digital/Math - 'Y' - Previous/Decrease, 'H' - Next/Increase, 'U' - Up, 'J' - Down</LI>
+   <LI>Entry knob - 'E','&#8593;','&#8594;' - Clockwise, 'D','&#8595;','&#8592;' - Counter clockwise</LI>
+   <LI>Analog Vertical Sensitivity - 'L' - Decrease, 'O' - Increase</LI>
+   <LI>Analog Vertical Position - 'P' - Up, ';' - Down</LI>
+</UL>

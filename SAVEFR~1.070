@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<HTML>
+<HEAD>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <TITLE>save </TITLE>
+
+   <SCRIPT language="javascript" type="text/javascript">
+      <!-- hide
+      var saveHelpWindow = null;
+      var goScopeInfo = new parent.ScopeInfo();
+
+      function getHelp()
+      {
+         if (!saveHelpWindow || saveHelpWindow.closed)
+         {
+            saveHelpWindow = window.open('help/helpSave.asp?Model=' + goScopeInfo.sModel, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+         }
+         if (saveHelpWindow) saveHelpWindow.focus();
+      }
+      -->
+   </SCRIPT>
+
+</HEAD>
+<FRAMESET cols="*" rows="250,0,*" id="idFrameSetSave">
+   <FRAME name="frSaveUI" id="idFrSaveUI" frameborder="0" scrolling="no" noresize src="save.asp">
+   <FRAME name="frDownload" id="idFrDownload" frameborder="0" scrolling="no" noresize src="about:blank">
+   <FRAME name="frDoSave" id="idFrDoSave" frameborder="0" scrolling="auto" noresize src="about:blank" >
+</FRAMESET>
+</HTML>

@@ -1,0 +1,39 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--#include file="helpVar.asp"-->
+<HTML>
+<HEAD>
+   <TITLE>Help Firmware Version </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="helpStyle.css" rel="stylesheet" title="WebEnabled" type="text/css">
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+      <!-- Begin logos row - middle logo is instrument specific -->
+      <TR bgcolor="#FFFFFF">
+         <TD bgcolor="#FFFFFF" height="60" valign="MIDDLE" width="230">
+            <IMG alt="Agilent" border="0" height="60" src="../image/agilent.gif" width="230">
+         </TD>
+         <TD bgcolor="#336699" class="blue" height="60" valign="top">
+            <IMG alt="" src="../image/instrumentBanner.gif"></TD>
+      </TR>
+      <!-- End logos row -->
+      <TR>
+         <TD bgcolor="#336699" class="blue" colspan="2">
+            <IMG alt="" height="2" src="../image/filltrans.gif"></TD>
+      </TR>
+   </TABLE>
+   <H1>
+      Firmware Version Help</H1>
+   <P>
+      <B>Firmware Version </B>provides a convenient means to check and upgrade the firmware
+      for your instrument. Firmware upgrade are available for download from 
+      <A href="http://www.agilent.com/find/<%=sModelSeries%>X-Series-sw" target="_blank">
+         <%=sModel%>&nbsp;software page</A>. Keep your firmware up to date to enjoy the
+      best performance from your instrument.
+   </P>
+   <P>
+      We recommend that you download the firmware file to your computer and then use this
+      web page to install the file in the instrument.
+   </P>
+</BODY>
+</HTML>

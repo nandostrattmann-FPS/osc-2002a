@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+   <TITLE>Support&nbsp; |&nbsp; Products&nbsp; |&nbsp; Agilent </TITLE>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" type="text/css">
+
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--
+      var goScopeInfo = new parent.ScopeInfo();
+      
+      function openBrowserWindow(url)
+      {
+         window.open(url, 'out', 'toolbar=yes,location=yes,menubar=yes,scrollbars=yes, resizable=yes,width=640,height=400,screenX=150,screenY=150');
+      }
+      //-->
+   </SCRIPT>
+
+</HEAD>
+<BODY>
+   <TABLE border="0" cellpadding="0" cellspacing="0" width="100%">
+      <!-- Begin external links row - remove row when Internet not available -->
+      <TR>
+         <TD colspan="3" class="darkGrayBanner" height="20">
+            <DIV align="right">
+               <A class="weblink" href="#" onclick="openBrowserWindow('http://www.agilent.com/find/' + goScopeInfo.sModelSeries + 'X-Series')"
+                  onmouseout="window.status=''; return true;" onmouseover="window.status='www.agilent.com/find/' + goScopeInfo.sModelSeries + 'X-Series'; return true;">
+                  Support</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A class="weblink" href="#" onclick="openBrowserWindow('http://www.agilent.com/find/oscilloscopes')"
+                     onmouseout="window.status=''; return true;" onmouseover="window.status='www.agilent.com/find/oscilloscopes'; return true;">
+                     Products</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A class="weblink" href="#" onclick="openBrowserWindow('http://www.agilent.com')"
+                        onmouseout="window.status=''; return true;" onmouseover="window.status='www.agilent.com'; return true;">
+                        Agilent Site</A>&nbsp;&nbsp;&nbsp;
+            </DIV>
+         </TD>
+      </TR>
+      <!-- End external links row -->
+      <!-- Begin logos row - middle logo is instrument specific -->
+      <TR>
+         <TD height="63" width="230">
+            <IMG alt="Agilent Technologies" border="0" height="63" src="image/agilent.gif" width="230"></TD>
+         <TD class="blueBanner" height="63" width="100%">
+            &nbsp;Oscilloscope</TD>
+         <TD align="right" class="blue" height="63">
+            <IMG alt="Another Web-Enabled Instrument" height="63" src="image/web-enable.gif"
+               width="234"></TD>
+      </TR>
+      <!-- End logos row -->
+      <TR>
+         <TD colspan="3" class="blueLine">
+            <IMG src="image/filltrans.gif" height="2" alt=""></TD>
+      </TR>
+   </TABLE>
+</BODY>
+</HTML>

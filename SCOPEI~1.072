@@ -1,0 +1,44 @@
+<%
+Dim goScopeInfo
+
+Set goScopeInfo = CreateObject("infiniiVisionWebCom.ScopeInfo")
+%>
+
+<%
+Sub CreateJSScopeInfoObject
+%>
+      function ScopeInfo()
+      {
+         this.sModel                = "<%=goScopeInfo.Model%>";
+         this.sSerialNum            = "<%=goScopeInfo.SerialNum%>";
+         this.sWebTitle             = "<%=goScopeInfo.WebTitle%>";
+         this.sModelSeries          = "<%=goScopeInfo.ModelSeries%>";
+         this.sInstImage            = "<%=goScopeInfo.InstImage%>";
+         this.sFirmwareRev          = "<%=goScopeInfo.FirmwareRev%>";
+         this.sAnalogChannels       = "<%=goScopeInfo.AnalogChannels%>";
+         this.sVncFilename          = "<%=goScopeInfo.VncFilename%>";
+         this.sScpiFilename         = "<%=goScopeInfo.ScpiFilename%>";
+         this.sDigitalChannels      = "<%=goScopeInfo.DigitalChannels%>";
+         this.sDfltIpAddress        = "<%=goScopeInfo.DfltIpAddress%>"; 
+         this.sDfltSubnetMask       = "<%=goScopeInfo.DfltSubnetMask%>";
+         this.sDfltGateway          = "<%=goScopeInfo.DfltGateway%>";
+         this.sDfltDescription      = "<%=goScopeInfo.DfltDescription%>";
+         this.sDfltMdnsDescription  = "<%=goScopeInfo.DfltMdnsDescription%>";
+         this.sDfltHostname         = "<%=goScopeInfo.DfltHostname%>";
+         this.sVisaString           = "<%=goScopeInfo.VisaString%>";
+         this.sMacAddress           = "<%=goScopeInfo.MacAddress%>";
+         this.sVisaUsbString        = "<%=goScopeInfo.VisaUsbString%>";
+         this.sSiclName             = "<%=goScopeInfo.SiclName%>";
+         this.sDns2Ip               = "<%=goScopeInfo.Dns2Ip%>";
+         this.sDns3Ip               = "<%=goScopeInfo.Dns3Ip%>";
+         this.sDHCPServer           = "<%=goScopeInfo.DHCPServer%>";
+         this.sDomain               = "<%=goScopeInfo.Domain%>";
+         this.sResolvedHostname     = "<%=goScopeInfo.ResolvedHostname%>";
+         this.sMDnsHostname         = "<%=goScopeInfo.mDnsHostname%>";
+         this.sNetBIOS              = "<%=goScopeInfo.NetBIOS%>";
+      }
+
+<%
+   Response.Write "      "
+End Sub
+%>

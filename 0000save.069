@@ -1,0 +1,734 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@  language="VBSCRIPT" %>
+<!--#include file="enumConst.asp"-->
+<!--#include file="constant.asp"-->
+<%
+   Dim gsAlbFormatOptions
+   Dim gsWfmMemSrcOptions
+   Dim gsFormatOptions
+   Dim gbSegmentOn
+   Dim giSaveFormat
+   Dim gsParam1
+   Dim goWebSave
+   Dim giMinDataLength
+   Dim giMaxDataLength
+   Dim gsExtMap
+   Dim gsClearErr
+   Dim gbMaxLength
+   Dim gsModelSeries
+
+   gsAlbFormatOptions = ""
+   gsWfmMemSrcOptions = ""
+   gsFormatOptions = ""
+   gbSegmentOn = False
+   giSaveFormat = FORMAT_SETUP
+   gbMaxLength = False
+   gsModelSeries = ""
+   
+   gsClearErr = "true"
+   gsClearErr = Request.QueryString("cerr")
+   If (gsClearErr = "") Then
+      gsClearErr = "true"
+   End If
+   
+   gsModelSeries = Request.QueryString("series")
+   
+   gsParam1 = Request.QueryString("p1")
+   If (gsParam1 <> "") Then
+      giSaveFormat = CLng(gsParam1) AND MASK_FORMAT_ID
+   End If
+   
+   Set goWebSave = CreateObject("infiniiVisionWebCom.WebSave")   
+   If (goWebSave Is Nothing) Then
+      Response.Write "FATAL ERROR!!!"
+      Response.End
+   End If   
+
+   giMinDataLength = 0
+   giMaxDataLength = 0
+   gsFormatOptions = goWebSave.GetSaveFormatOptions & vbCrLf
+   gsExtMap = goWebSave.GetJsSaveExtMap & vbCrLf
+   
+   Select Case giSaveFormat
+      Case FORMAT_WFM_MEM
+         gsWfmMemSrcOptions = goWebSave.GetWfmMemSrcOptions
+      Case FORMAT_CSV, FORMAT_ASCII_XY, FORMAT_BIN, FORMAT_ALB
+         arrMinMax = Split(goWebSave.GetDataLengths, ",")
+         giMinDataLength = arrMinMax(0)
+         giMaxDataLength = arrMinMax(1)
+         gbMaxLength = arrMinMax(2)
+         
+         If (giSaveFormat <> FORMAT_ALB) Then
+            gbSegmentOn = goWebSave.IsSegmented
+         Else
+            gsAlbFormatOptions = goWebSave.GetAlbFormatOptions
+         End If
+   End Select
+
+   Set goWebSave = Nothing
+%>
+<HTML>
+<HEAD>
+   <META content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+   <LINK href="style.css" rel="stylesheet" title="WebEnabled" type="text/css">
+   <TITLE>Web Save Recall</TITLE>
+
+   <SCRIPT type="text/javascript" src="CookieUtils.js"></SCRIPT>
+   <SCRIPT language="JavaScript" type="text/javascript">
+      <!--      hide
+      var saveHelpWindow = null;
+      var goScopeInfo = new parent.parent.ScopeInfo();
+      var giCurrSaveFormat = <%=FORMAT_SETUP%>;
+      var gbErr = <%=gsClearErr%>;
+      var gbSubmit = false;
+            
+<%=gsExtMap%>
+
+      function openBrowserWindow(url)
+      {
+         window.open(url, 'out', 'toolbar=yes,location=yes,menubar=yes,scrollbars=yes, resizable=yes,width=640,height=400,screenX=150,screenY=150');
+      }
+
+      function getHelp()
+      {
+         if (!saveHelpWindow || saveHelpWindow.closed)
+            saveHelpWindow = window.open('help/helpSave.asp?Model=' + goScopeInfo.sModel, 'help', 'scrollbars=yes,resizable=yes,width=700,height=450,screenX=150,screenY=150, left=150,top=150');
+         if (saveHelpWindow) saveHelpWindow.focus();
+      }
+      
+      function GetSelectedFormat(formObj)
+      {
+         return parseInt(formObj.selFormat.value);
+      }
+
+      function onLoad()
+      {
+         var formObj = document.frmSave;
+         DefaultControls(formObj);
+      }
+      
+      // removes leading and trailing spaces
+      function RemoveSpaces(theValue)
+      {
+         // remove leading spaces
+         while ('' + theValue.charAt(0) == ' ')
+            theValue = theValue.substring(1, theValue.length);
+         // remove trailing spaces
+         while ('' + theValue.charAt(theValue.length - 1) == ' ')
+            theValue = theValue.substring(0, theValue.length - 1);
+         return theValue;
+      }
+      
+      function CheckFilename(filename)
+      {
+         var pattInvalidChar = /[/\\*\?\|"<>:/]/;
+         var result = filename.match(pattInvalidChar);
+
+         if (result)
+         {
+            return false;
+         }
+         return true;
+      }
+
+      // removes leading and trailing spaces
+      function RemoveLeadingZero(theValue)
+      {
+         // remove leading zeros
+         while ('' + theValue.charAt(0) == '0')
+            theValue = theValue.substring(1, theValue.length);
+         return theValue;
+      }
+      
+      function CheckNum(strNum)
+      {
+         var numPatt = /^[0-9]+$/;
+         var result = strNum.match(numPatt);
+         
+         if (result)
+         {
+            return true;
+         }
+         return false;
+      }
+      
+      function IsDataLengthValid(formObj)
+      {
+         if (formObj.chkMaxLength.checked == true)
+         {
+            return true;
+         }
+         
+         formObj.txtDataLength.value = RemoveSpaces(formObj.txtDataLength.value);
+         formObj.txtDataLength.value = RemoveLeadingZero(formObj.txtDataLength.value);
+         if(CheckNum(formObj.txtDataLength.value) == false)
+         {
+            alert("Length [" + formObj.txtDataLength.value + "] is not a valid number.");
+            return false;
+         }
+         return true;
+      }
+      
+      function CheckDataLengthMinMax(formObj)
+      {
+         var iMinVal = <%=giMinDataLength%>;
+         var iMaxVal = 1250000;//<%=giMaxDataLength%>;
+         var iCurrLength = parseInt(formObj.txtDataLength.value);
+         
+         if (iMinVal < iMaxVal && iCurrLength < iMinVal)
+         {
+            formObj.txtDataLength.value = iMinVal;
+            return;
+         }
+         
+         if (iCurrLength > iMaxVal)
+         {
+            formObj.txtDataLength.value = iMaxVal;
+         }
+      }
+           
+      function selFormat_OnChanged(formObj)
+      {
+         var sUrl;
+         var iSaveFormat = GetSelectedFormat(formObj);
+         
+         if (giCurrSaveFormat == <%=FORMAT_ASCII_XY%>)
+         {
+            clearDoSaveFrame();
+         }
+         
+         sUrl = "save.asp" + 
+                "?p1=" + iSaveFormat +
+                "&cerr=" + gbErr + 
+                "&series=" + goScopeInfo.sModelSeries;
+         //alert(sUrl);
+         gbSubmit = true;
+         formObj.action = sUrl;
+         formObj.submit();
+      }
+      
+      function getParam1(formObj)
+      {
+         var iSaveFormat = GetSelectedFormat(formObj);
+         var value = iSaveFormat;
+         
+         if (iSaveFormat == <%=FORMAT_SETUP%> || iSaveFormat == <%=FORMAT_MASK%>)
+         {
+            return value;
+         }
+         
+         switch (iSaveFormat)
+         {
+            case <%=FORMAT_BMP_8_BIT%>:
+            case <%=FORMAT_BMP%>:
+            case <%=FORMAT_PNG%>:
+               value |= (formObj.chkInvertGrat.checked == false ? 0 : 1) << <%=BIT_POS_INVERT_GRAT%>;
+               value |= (formObj.rdoPaletteColor[0].checked == false? 0 : 1) << <%=BIT_POS_COLOR_PAL%>;
+               break;
+            case <%=FORMAT_ALB%>:
+               value |= formObj.selAlbFormat.value << <%=BIT_POS_ALB_FORMAT%>;
+               break;
+            case <%=FORMAT_WFM_MEM%>:
+               value |= formObj.selWfmMemSrc.value << <%=BIT_POS_CHAN_ID%>;
+               break;
+            case <%=FORMAT_CSV%>:
+            case <%=FORMAT_ASCII_XY%>:
+            case <%=FORMAT_BIN%>:
+               if (formObj.rdoSaveSegment != null)
+               {
+                  value |= (formObj.rdoSaveSegment[0].checked == false? 1 : 0) << <%=BIT_POS_SAVE_SEGMENT%>;
+               }
+               break;
+         }
+         
+         return value;
+      }
+      
+      function getParam2(formObj)
+      {
+         var iSaveFormat = GetSelectedFormat(formObj);
+         
+         if (iSaveFormat == <%=FORMAT_ALB%> ||
+             iSaveFormat == <%=FORMAT_CSV%> ||
+             iSaveFormat == <%=FORMAT_ASCII_XY%> ||
+             iSaveFormat == <%=FORMAT_BIN%>)
+         {
+            if (formObj.chkMaxLength.checked == true)
+            {
+               return -1;
+            }
+            else
+            {
+               //CheckDataLengthMinMax(formObj);
+               return formObj.txtDataLength.value;
+            }
+         }
+         else if (iSaveFormat == <%=FORMAT_ARB%>)
+         {
+            if (formObj.selArbSrc)
+            {
+               return formObj.selArbSrc.value;
+            }
+         }
+         return 0; 
+      }
+      
+      function DefaultControls(formObj)
+      {
+         var iSaveFormat;
+
+         formObj.selFormat.value = "<%=giSaveFormat%>";
+         giCurrSaveFormat = parseInt("<%=giSaveFormat%>");
+         
+         clearDoSaveFrameErr();
+         
+         if (giCurrSaveFormat == <%=FORMAT_ASCII_XY%> ||
+             giCurrSaveFormat == <%=FORMAT_WFM_MEM%> ||
+             giCurrSaveFormat == <%=FORMAT_ALB%>)
+         {
+            clearDoSaveFrame();
+         }         
+         
+         iSaveFormat = GetSelectedFormat(formObj);
+         formObj.txtFilename.value = GetFilename();
+         formObj.selFormat.focus();
+         
+         switch (iSaveFormat)
+         {
+            case <%=FORMAT_BMP_8_BIT%>:
+            case <%=FORMAT_BMP%>:
+            case <%=FORMAT_PNG%>:
+               formObj.chkInvertGrat.checked = false;
+               formObj.rdoPaletteColor[0].checked = true;
+               formObj.chkNewAcq.checked = false;
+               break;
+            case <%=FORMAT_ASCII_XY%>:               
+               formObj.btnPreview.value = "Apply & Preview";
+               formObj.btnSave.disabled = true;
+            case <%=FORMAT_ALB%>:
+            case <%=FORMAT_CSV%>:
+            case <%=FORMAT_BIN%>:
+               formObj.txtDataLength.disabled = <%=gbMaxLength%>;
+               formObj.chkMaxLength.checked = <%=gbMaxLength%>;
+               if (<%=giMaxDataLength%> == 0)  
+               {
+                  formObj.txtDataLength.value = "0";
+                  formObj.btnSave.disabled = true;
+                  formObj.btnPreview.disabled = true;
+                  formObj.txtDataLength.disabled = true;
+                  formObj.chkMaxLength.disabled = true;
+               }
+               else if (<%=giMaxDataLength%> > 2000 &&
+                        <%=gbMaxLength%> == 0)
+               {
+                  formObj.txtDataLength.value = "2000";
+               }
+               else
+               {
+                  formObj.txtDataLength.value = "<%=giMaxDataLength%>";
+               }
+               
+               if (formObj.rdoSaveSegment != null)
+               {
+                  formObj.rdoSaveSegment[0].checked = true;
+               }               
+               break;
+            case <%=FORMAT_WFM_MEM%>:
+               if (<%=Len(gsWfmMemSrcOptions)%> == 0)
+               {
+                  formObj.btnSave.disabled = true;
+                  formObj.btnPreview.disabled = true;
+               }
+               break;
+         }
+      }      
+      
+      function downloadFile(filename, param1, param2)
+      {
+         var sUrl = "download.asp" +
+                    "?filename=" + filename +
+                    "&p1=" + param1 +
+                    "&p2=" + param2 +
+                    "&file=1";
+         //alert(sUrl);
+         parent.frDownload.location = sUrl;
+      }
+
+      function downloadData(filename, param1, param2)
+      {
+         var sUrl = "download.asp" +
+                    "?filename=" + filename +
+                    "&p1=" + param1 +
+                    "&p2=" + param2 +
+                    "&file=0";
+         //alert(sUrl);
+         parent.frDownload.location = sUrl;
+      }
+      
+      function GetFinalFilename(formObj)
+      {
+         var sFilename;
+         
+         formObj.txtFilename.value = RemoveSpaces(formObj.txtFilename.value);
+         sFilename = formObj.txtFilename.value;
+
+         if (sFilename.length == 0)
+         {
+            alert("File name cannot be empty.");
+            formObj.txtFilename.select();
+            formObj.txtFilename.focus();
+            return "";
+         }
+
+         if (CheckFilename(sFilename) == false)
+         {
+            alert("File name \"" + formObj.txtFilename.value + "\" is invalid.\n" +
+                  "A file name cannot contain any of the following characters:\n" +
+                  "            \\ / : * ? \" < > |");
+            formObj.txtFilename.select();
+            formObj.txtFilename.focus();
+            return "";
+         }
+         
+         if (GetSelectedFormat(formObj) == <%=FORMAT_ASCII_XY%>)
+         {
+            if (sFilename.charAt(sFilename.length-1) != "_" ||
+                sFilename.charAt(sFilename.length-1) != "-")
+            {
+               sFilename += "_";
+            }
+         }
+         
+         SaveFilename(formObj.txtFilename.value);
+         //document.cookie = "filename=" + formObj.txtFilename.value;
+         return sFilename;
+      }
+      
+      function btnSave_OnClick(formObj)
+      {
+         var bDownloadData = true;
+         var sFilename = GetFinalFilename(formObj);
+         var iSaveFormat = GetSelectedFormat(formObj);
+         
+         clearDoSaveFrameErr();
+         
+         if (sFilename.length == 0)
+         {
+            return;
+         }
+         
+         //alert(getParam1(formObj) + ", " + getParam2(formObj));
+         sFilename += extMap[iSaveFormat];
+         
+         switch (iSaveFormat)
+         {
+            case <%=FORMAT_SETUP%>:
+            case <%=FORMAT_MASK%>:
+            case <%=FORMAT_WFM_MEM%>:
+            case <%=FORMAT_MULTI_CHAN%>: 
+               bDownloadData = false;
+               break;
+            case <%=FORMAT_ALB%>:
+            case <%=FORMAT_CSV%>:
+            case <%=FORMAT_ASCII_XY%>:
+            case <%=FORMAT_BIN%>:               
+               if (!IsDataLengthValid(formObj))
+               {
+                  return;
+               }            
+               break;
+            default:
+               
+               break;
+         }
+         
+         if (bDownloadData == true)
+         {
+            downloadData(sFilename, 
+                            getParam1(formObj), 
+                            getParam2(formObj));
+         }
+         else
+         {
+            downloadFile(sFilename, 
+                         getParam1(formObj), 
+                         getParam2(formObj));
+         }
+      }
+
+      function SaveAsciiXYFile(filename, cid, wss)
+      {
+         var iParam;
+         var formObj = document.frmSave;
+         
+         if (!IsDataLengthValid(formObj))
+         {
+            return;
+         }
+         
+         iParam1 = getParam1(formObj);
+         iParam1 |= (cid << <%=BIT_POS_CHAN_ID%>);
+         iParam1 |= (wss << <%=BIT_POS_WAVE_SUB%>);
+         
+         downloadData(filename, 
+                      iParam1, 
+                      getParam2(formObj));
+      }
+
+      function btnSetupInfo_OnClick(formObj)
+      {
+         var sFilename = formObj.txtFilename.value + ".txt";
+         var iParam1 = <%=FORMAT_SETUP%>;
+         iParam1 |= 1 << <%=BIT_POS_SAVE_FACTORS%>;
+         
+         downloadFile(sFilename, 
+                      iParam1, 
+                      0);
+      }      
+
+      function btnPreview_OnClick(formObj)
+      {
+         var sUrl;
+         var iParam1 = getParam1(formObj);
+         var sFilename = GetFinalFilename(formObj);
+         var iSaveFormat = GetSelectedFormat(formObj);         
+         
+         iParam1 |= (1 << <%=BIT_POS_PREVIEW%>);
+         iParam1 |= (formObj.chkNewAcq.checked == false ? 0 : 1) << <%=BIT_POS_NEW_ACQ%>;
+
+         if (sFilename.length == 0)
+         {
+            return;
+         }
+                  
+         if (iSaveFormat == <%=FORMAT_ALB%> ||
+             iSaveFormat == <%=FORMAT_CSV%> ||
+             iSaveFormat == <%=FORMAT_ASCII_XY%> ||
+             iSaveFormat == <%=FORMAT_BIN%>)
+         {                     
+               if (!IsDataLengthValid(formObj))
+               {
+                  return;
+               }            
+         }        
+                  
+         sUrl = "doSave.asp" + 
+                "?filename=" + sFilename +
+                "&p1=" + iParam1 + 
+                "&p2=" + getParam2(formObj) + 
+                "&ext=" + extMap[iSaveFormat];
+         //alert(sUrl);
+         parent.frDoSave.location = sUrl;
+      } 
+
+      function clearDoSaveFrameErr()
+      {
+         if (gbErr)
+         {
+            parent.frDoSave.location = "about:blank";
+            gbErr = false;
+         }
+      }
+
+      function clearDoSaveFrame()
+      {
+         if (parent.frDoSave.location != "about:blank")
+         {
+            parent.frDoSave.location = "about:blank";
+         }
+      }
+      
+      function onclick_chkMaxLength(formObj)
+      {
+         formObj.txtDataLength.disabled = formObj.chkMaxLength.checked;
+      }
+      
+      -->
+   </SCRIPT>
+
+</HEAD>
+<BODY onload="onLoad();">
+   <TABLE border="0" cellpadding="10" cellspacing="0" width="100%">
+      <TR align="left" valign="top">
+         <TD valign="bottom" align="left" width="98%">
+            <DIV align="left">
+               <TABLE width="640" border="0" cellpadding="0" cellspacing="2">
+                  <TR>
+                     <TD width="100%">
+                        <H3>
+                           <SPAN>Save</SPAN>
+                        </H3>
+                        <HR noshade size="1">
+                     </TD>
+                  </TR>
+                  <TR>
+                     <TD>
+                        <FORM action="" onsubmit="return gbSubmit" method="POST" name="frmSave">
+                        <TABLE border="0" cellpadding="1" cellspacing="1" width="100%">
+                           <COL width="25%" align="right">
+                           <COL width="75%" align="left">
+                           <TR>
+                              <TD class="labelBlue">
+                                 Filename&nbsp;
+                              </TD>
+                              <TD class="dataWhiteLeft">
+                                 <INPUT class="stdFont" name="txtFilename" id="idTxtFilename" type="text" size="50" maxlength="64">
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Format&nbsp;
+                              </TD>
+                              <TD class="dataWhiteLeft">
+                                 <SELECT class="dataWhite" id="idSelFormat" name="selFormat" onchange="selFormat_OnChanged(this.form);">
+                                    <%=gsFormatOptions%>
+                                 </SELECT>
+<% If (giSaveFormat = FORMAT_ASCII_XY) Then %>
+                                 <FONT color="red"><B><SUP>*</SUP></B></FONT><SMALL>Please apply changes before saving</SMALL>
+<% End If %>                                 
+                              </TD>
+                           </TR>
+<% Select Case giSaveFormat
+      Case FORMAT_SETUP, FORMAT_MASK, FORMAT_MULTI_CHAN
+         'do nothing
+      Case FORMAT_BMP_8_BIT, FORMAT_BMP, FORMAT_PNG%>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Invert Graticule&nbsp; 
+                              </TD>
+                              <TD class="dataWhiteLeft">
+                                 <INPUT type="checkbox" name="chkInvertGrat">
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Palette Color&nbsp; 
+                              </TD>
+                              <TD class="dataWhiteLeft">
+                                 <INPUT type="radio" name="rdoPaletteColor" value="color">
+                                 Color &nbsp;
+                                 <INPUT type="radio" name="rdoPaletteColor" value="gray">
+                                 Grayscale 
+                              </TD>
+                           </TR>
+<%    Case FORMAT_CSV, FORMAT_ASCII_XY, FORMAT_BIN, FORMAT_ALB %>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Length&nbsp;
+                              </TD>
+                              <TD class="dataWhiteLeft">
+                                 <INPUT class="stdFont" name="txtDataLength" id="idTxtDataLength" type="text" size="12" maxlength="7">
+                                 &nbsp;
+<% If (giMaxDataLength = 0) Then %>
+                                 (No data available.)
+<% Else %>
+                                 <FONT color="red"><B><SUP>*</SUP></B></FONT><SMALL>Actual data length may not be the same</SMALL>
+<% End If%>                                 
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Max Length&nbsp; 
+                              </TD>
+                              <TD class="dataWhiteLeft">
+                                 <INPUT type="checkbox" name="chkMaxLength" onclick="onclick_chkMaxLength(this.form)">
+                              </TD>
+                           </TR>
+         <%If (giSaveFormat = FORMAT_ALB) Then%>                           
+                           <TR>
+                              <TD class="labelBlue">
+                                 Alb Format&nbsp; 
+                              </TD>
+                              <TD class="dataWhiteLeft">
+                                 <SELECT class="dataWhite" id="idSelAlbFormat" name="selAlbFormat" >
+                                    <%=gsAlbFormatOptions %>                                    
+                                 </SELECT>
+                                 &nbsp;&nbsp;
+                                 <INPUT name="btnRefresh" id="idBtnRefresh" type="button" value=" Refresh " onclick="selFormat_OnChanged(this.form);">
+                              </TD>
+                           </TR>
+         <%ElseIf (gbSegmentOn <> false) Then %>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Save Segment&nbsp; 
+                              </TD>
+                              <TD class="dataWhiteLeft">
+                                 <INPUT type="radio" name="rdoSaveSegment" value="current">
+                                 Current &nbsp;
+                                 <INPUT type="radio" name="rdoSaveSegment" value="all">
+                                 All &nbsp;&nbsp;
+                                 <FONT color="red"><B><SUP>*</SUP></B></FONT><SMALL>New acquisition could take very long time</SMALL>
+                              </TD>
+                           </TR>                                           
+         <%End If%>                           
+<%    Case FORMAT_WFM_MEM%>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Ref Waveform Source&nbsp; 
+                               </TD>
+                              <TD class="dataWhiteLeft">
+<% If (Len(gsWfmMemSrcOptions) > 0) Then %>
+                                 <SELECT class="dataWhite" id="idSelWfmMemSrc" name="selWfmMemSrc">
+                                    <%=gsWfmMemSrcOptions %>
+                                 </SELECT>
+<% Else %>
+                                 No source available.
+<% End If %>
+                                 &nbsp;&nbsp;
+                                 <INPUT name="btnRefresh" id="idBtnRefresh" type="button" value=" Refresh " onclick="selFormat_OnChanged(this.form);">
+                              </TD>
+                           </TR>    
+<%    Case FORMAT_ARB %>
+<% If  gsModelSeries = 4000 Then %>
+                           <TR>
+                              <TD class="labelBlue">
+                                 Save from&nbsp; 
+                               </TD>
+                              <TD class="dataWhiteLeft">
+                                 <SELECT class="dataWhite" id="idSelArbSrc" name="selArbSrc">
+                                    <OPTION value="0">Wave Gen 1</OPTION>
+                                    <OPTION value="1">Wave Gen 2</OPTION>
+                                 </SELECT>
+                              </TD>
+                           </TR> 
+<% End If %>                           
+<%    Case Else %>
+         
+<% End Select %>
+                           <TR>
+                              <TD colspan="2">
+                              </TD>
+                           </TR>
+                           <TR>
+                              <TD colspan="2" >
+                                 <TABLE border="0" cellpadding="1" cellspacing="0" width="100%">
+                                    <COL width="50%">
+                                    <COL width="50%">                                    
+                                    <TR>
+                                       <TD>
+                                          <INPUT type="checkbox" name="chkNewAcq" onclick="clearDoSaveFrame();">New Acquisition <BR>
+                                          <INPUT name="btnPreview" id="idBtnPreview" type="button" value=" Preview " onclick="btnPreview_OnClick(this.form);">
+                                       </TD>
+                                       <TD style="text-align:right; vertical-align:bottom">
+<% If (giSaveFormat <> FORMAT_SETUP AND _
+       giSaveFormat <> FORMAT_MASK AND _
+       giSaveFormat <> FORMAT_ARB) Then %>                              
+                                          <INPUT name="btnSetupInfo" id="idBtnSetupInfo" type="button" value="Save Setup Info" onclick="btnSetupInfo_OnClick(this.form);">
+<% End If %>
+                                          <INPUT name="btnSave" id="idBtnSave" type="button" value="   Save   " onclick="btnSave_OnClick(this.form);">
+                                       </TD>
+                                    </TR>
+                                 </TABLE>
+                              </TD>
+                           </TR>
+                        </TABLE>
+                        </FORM>
+                     </TD>
+                  </TR>
+               </TABLE>
+            </DIV>
+         </TD>
+      </TR>
+   </TABLE>
+</BODY>
+</HTML>

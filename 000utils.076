@@ -1,0 +1,57 @@
+function getBrowser(sUserAgent)
+{
+   if (sUserAgent.search("MSIE") > 0)
+   {
+      return "MSIE";
+   }
+   else if (sUserAgent.search("Firefox") > 0)
+   {
+      return "Firefox";
+   }
+   else if (sUserAgent.search("Chrome") > 0)
+   {
+      return "Chrome";
+   }
+   else
+   {
+      return "";
+   }
+}
+
+function getAppletVersion(fwVer, aplVer)
+{
+   var i;
+   var retVer = "";
+   var splitFwVer = fwVer.split(".");
+   for (i = 0; i < splitFwVer.length; ++i)
+   {
+      switch (i)
+      {
+      case 0:
+         retVer = splitFwVer[0];
+         break;
+      case 1:
+         retVer += splitFwVer[1];
+         break;
+      case 2:
+         retVer += "." + splitFwVer[2].substring(0, 4);
+         retVer += "." + splitFwVer[2].substring(4, 8);
+         retVer += "." + splitFwVer[2].substring(8);
+         break;
+      default:
+         i = splitFwVer.length;
+         break;
+      }
+   }
+   
+   if (i != 3)
+   {
+      retVer = "1.0.0." + aplVer;
+   }
+   else
+   {
+      retVer += aplVer;
+   }
+   
+   return retVer;
+}

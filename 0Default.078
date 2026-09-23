@@ -1,0 +1,19 @@
+    <%   
+    response.Expires = 0 
+    set lxiRequired = CreateObject("AgilentLxiWebComServer.LxiRequired")    
+    instrumentApplicationRunning = lxiRequired.InstrumentApplicationRunning
+    if (instrumentApplicationRunning = false) then    
+        response.Status = "501"
+        response.Write(response.Status)
+        response.End    
+    else    
+        response.ContentType = "text/xml"
+        xmlDeclaration = "<?xml version=" + chr(34) + "1.0" + chr(34) + " encoding=" + chr(34) + "UTF-8" + chr(34) + "?>"
+        response.Write(xmlDeclaration)
+        xmlString = lxiRequired.IdentificationAsXml
+        response.Write(xmlString)       
+        response.End
+    end if
+
+    %>
+
